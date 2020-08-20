@@ -1,0 +1,23 @@
+<header th:fragment="header">
+	<nav class="navbar navbar-inverse ">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" th:href="@{'/'}">Sun&#x2A;</a>
+			</div>
+			<div id="navbar">
+				<ul class="nav navbar-nav navbar-right">
+					<li class="nav-item dropdown">
+						<a class="nav dropdown-toggle"
+						   id="languages" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<i class="material-icons" th:text="#{header.language}"></i>
+						</a>
+						<div class="dropdown-menu" aria-labelledby="languages">
+							<a class="dropdown-item" th:href="@{?lang=en}">English</a>
+							<br>
+							<a class="dropdown-item" th:href="@{?lang=jp}">日本語</a>
+						</div>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</header>
