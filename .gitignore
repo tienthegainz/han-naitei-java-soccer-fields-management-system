@@ -100,4 +100,4 @@ nb-configuration.xml
 
 
 src/main/resources/datasources.properties
-
+!src/main/webapp/assets/AdminLTE/dist
