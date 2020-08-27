@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name= "field_types")
+@Table(name = "field_types")
 public class FieldType {
 
     @Id
@@ -59,19 +59,10 @@ public class FieldType {
         return createdAt;
     }
 
-    public void setCreateAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public Date getUpdateAt() {
         return updatedAt;
     }
 
-    public void setUpdateAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    @Override
     public String toString() {
         return "FieldType{" +
                 "id=" + id +

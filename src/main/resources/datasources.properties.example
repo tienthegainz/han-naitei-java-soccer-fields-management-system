@@ -8,4 +8,4 @@ mysql.password=
 hibernate.show_sql=true
 hibernate.format_sql=true
 hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
-current_session_context_class=thread
+hibernate.current_session_context_class=thread
