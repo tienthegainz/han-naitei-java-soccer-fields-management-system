@@ -1,7 +1,6 @@
 package app.model;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -9,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,40 +41,27 @@ public class User {
 
     @Column(name = "google_id")
     private String google_id;
-
-    public enum Role {
-        ADMIN, USER
-    }
-
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
-
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     private Date createdAt;
-
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
     private Date updatedAt;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<BookingRequest> bookingRequests;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Payment> payments;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Review> reviews;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Comment> comments;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Like> likes;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
     private List<Rating> ratings;
 
@@ -139,16 +125,8 @@ public class User {
         return createdAt;
     }
 
-    public void setCreateAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public Date getUpdateAt() {
         return updatedAt;
-    }
-
-    public void setUpdateAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     public String getAvatar() {
@@ -182,7 +160,6 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
-
 
     public List<BookingRequest> getBookingRequests() {
         return bookingRequests;
@@ -249,5 +226,9 @@ public class User {
                 ", updated_at=" + updatedAt.toString() +
                 ", created_at=" + createdAt.toString() +
                 '}';
+    }
+
+    public enum Role {
+        ADMIN, USER
     }
 }

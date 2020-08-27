@@ -25,6 +25,9 @@ public class Comment {
     @UpdateTimestamp
     private Date updatedAt;
 
+    @Column(name = "content")
+    private String content;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -40,14 +43,20 @@ public class Comment {
     @OneToMany(mappedBy = "parentComment")
     private List<Comment> childComments;
 
-
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public User getUser() {
@@ -86,16 +95,8 @@ public class Comment {
         return createdAt;
     }
 
-    public void setCreateAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public Date getUpdateAt() {
         return updatedAt;
-    }
-
-    public void setUpdateAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -104,9 +105,10 @@ public class Comment {
                 "id=" + id +
                 ", created_at=" + createdAt.toString() +
                 ", updated_at=" + updatedAt.toString() +
-                ", user=" + user.toString() +
+                ", content='" + content + '\'' +
+                ", user=" + user +
                 ", review=" + review.toString() +
-                ", parentComment=" + parentComment.toString() +
+                ", parentComment=" + parentComment.getId() + " - " + parentComment.getContent() +
                 '}';
     }
 }

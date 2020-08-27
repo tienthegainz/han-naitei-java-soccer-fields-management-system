@@ -28,12 +28,12 @@ public class BookingRequest {
     @Column(name = "from_date")
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    private Date from_date;
+    private Date fromDate;
 
     @Column(name = "to_date")
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
-    private Date to_date;
+    private Date toDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -54,20 +54,20 @@ public class BookingRequest {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "bookingRequest")
     private List<Payment> payments;
 
-    public Date getFrom_date() {
-        return from_date;
+    public Date getFromDate() {
+        return fromDate;
     }
 
-    public void setFrom_date(Date from_date) {
-        this.from_date = from_date;
+    public void setFromDate(Date fromDate) {
+        this.fromDate = fromDate;
     }
 
-    public Date getTo_date() {
-        return to_date;
+    public Date getToDate() {
+        return toDate;
     }
 
-    public void setTo_date(Date to_date) {
-        this.to_date = to_date;
+    public void setToDate(Date toDate) {
+        this.toDate = toDate;
     }
 
     public User getUser() {
@@ -110,21 +110,12 @@ public class BookingRequest {
         this.id = id;
     }
 
-
     public Date getCreateAt() {
         return createdAt;
     }
 
-    public void setCreateAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public Date getUpdateAt() {
         return updatedAt;
-    }
-
-    public void setUpdateAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -133,8 +124,8 @@ public class BookingRequest {
                 "id=" + id +
                 ", created_at=" + createdAt.toString() +
                 ", updated_at=" + updatedAt.toString() +
-                ", from_date=" + from_date.toString() +
-                ", to_date=" + to_date.toString() +
+                ", from_date=" + fromDate.toString() +
+                ", to_date=" + toDate.toString() +
                 ", user=" + user.toString() +
                 ", field=" + field.toString() +
                 ", status=" + status +
