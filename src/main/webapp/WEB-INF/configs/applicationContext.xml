@@ -31,10 +31,10 @@
 	</bean>
 
 	<bean id="localeResolver"
-		  class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+		  class="org.springframework.web.servlet.i18n.SessionLocaleResolver">
 		<property name="defaultLocale" value="en"/>
-		<property name="cookieName" value="myAppLocaleCookie"/>
-		<property name="cookieMaxAge" value="3600"/>
+<!--		<property name="cookieName" value="myAppLocaleCookie"/>-->
+<!--		<property name="cookieMaxAge" value="3600"/>-->
 	</bean>
 
 	<mvc:interceptors>
