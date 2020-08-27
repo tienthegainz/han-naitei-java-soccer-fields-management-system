@@ -28,6 +28,9 @@ public class Field {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "address", nullable = false)
+    private String address;
+
     @Column(name = "image")
     private String image;
 
@@ -61,6 +64,14 @@ public class Field {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getImage() {
@@ -115,25 +126,16 @@ public class Field {
         return createdAt;
     }
 
-    public void setCreateAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public Date getUpdateAt() {
         return updatedAt;
-    }
-
-    public void setUpdateAt(Date updatedAt) {
-        this.updatedAt = updatedAt;
     }
 
     @Override
     public String toString() {
         return "Field{" +
                 "id=" + id +
-                ", created_at=" + createdAt.toString() +
-                ", updated_at=" + updatedAt.toString() +
                 ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
                 ", image='" + image + '\'' +
                 ", area=" + area +
                 ", fieldType=" + fieldType.toString() +
