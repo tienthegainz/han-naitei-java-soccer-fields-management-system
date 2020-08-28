@@ -11,4 +11,14 @@ public class HomeController {
         return "views/home/index";
     }
 
+    @GetMapping("/login")
+    public String login(){
+        return "views/auth/login";
+    }
+
+    @GetMapping("/register")
+    public String register(){
+        return "views/auth/register";
+    }
+
 }
