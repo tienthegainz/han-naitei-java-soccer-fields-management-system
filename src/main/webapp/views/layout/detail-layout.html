@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="views/layout/base-layout">
+<div layout:fragment="body">
+    <section class="content">
+        <div class="container-fluid">
+            <img src="https://www.sammobile.com/wp-content/uploads/2019/03/keyguard_default_wallpaper.png"
+                 th:src="${image}"
+                 display= "block"
+                 margin-left= "auto"
+                 margin-right= "auto"
+                 width="40%"
+                 class="img-responsive figure-img"
+            >
+            <hr>
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title" th:text="${title}">Field</h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <th:block th:each="info : ${allInfo}">
+                                <tr>
+                                    <th style="width:50%" th:text="${info.key}">Subtotal</th>
+                                    <td th:text="${info.value}">Lorem ipsum dolor sit amet</td>
+                                </tr>
+                            </th:block>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div><!-- /.container-fluid -->
+    </section>
+</div>
+</html>
