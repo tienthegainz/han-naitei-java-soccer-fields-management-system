@@ -5,4 +5,7 @@
     http://www.springframework.org/schema/beans/spring-beans.xsd">
 	<!--	Declare DAO bean-->
 	<!--		TODO -->
+	<bean id="userDAO" class="app.dao.impl.UserDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>

@@ -40,9 +40,6 @@
 			</props>
 		</property>
 
-		<!-- Load mapping of model and table -->
-		<!--		TODO -->
-
 
 	</bean>
 
