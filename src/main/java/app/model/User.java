@@ -2,8 +2,11 @@ package app.model;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -153,8 +156,9 @@ public class User {
         this.google_id = google_id;
     }
 
-    public Role getRole() {
-        return role;
+    public String getRole() {
+        String auth_role = "ROLE_" + role.toString();
+        return auth_role;
     }
 
     public void setRole(Role role) {
@@ -230,5 +234,11 @@ public class User {
 
     public enum Role {
         ADMIN, USER
+    }
+
+    public List<GrantedAuthority> getAuthorities() {
+        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority(this.getRole()));
+        return authorities;
     }
 }
