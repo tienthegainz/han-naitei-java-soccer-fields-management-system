@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="views/layout/base-layout">
+<div layout:fragment="body">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Create Field</h3>
+                </div>
+                <div class="card-body">
+                    <!-- TO DO: Use thymeleaf form !-->
+                    <form action="#">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" placeholder="Name"/>
+                            </div>
+                        </div>
+                        <a th:href="@{/field-types}" class="btn btn-default">Cancel</a>
+                        <button th:href="@{/field-types}" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</html>

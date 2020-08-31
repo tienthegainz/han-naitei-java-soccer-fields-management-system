@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="views/layout/base-layout">
+<div layout:fragment="body">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">List Field Type</h1>
+                    <a th:href="@{/field-types/create}" type="button" class="btn btn-sm btn-primary">
+                        Create
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table data-model="field-types"
+                                   class="table table-bordered js--dataTable">
+                                <thead>
+                                <tr>
+                                    <th scope="col">Name</th>
+                                    <th scope="col"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="fieldType,iter : ${data}">
+                                    <!-- TODO: Map with real data instead of Map  -->
+                                    <tr th:style="${iter.odd}? 'background-color: #ccc;'">
+                                        <th:block th:each="info : ${fieldType}">
+                                            <td th:text="${info.value}"></td>
+                                        </th:block>
+                                        <td>
+                                            <a th:href="@{'/field-types/' + ${iter.index}}" class="btn btn-primary">Detail</a>
+                                            <a th:href="@{'/field-types/' + ${iter.index} + '/edit'}" class="btn btn-warning">Edit</a>
+                                            <a class="btn btn-danger">Delete</a>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</html>
