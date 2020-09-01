@@ -13,7 +13,7 @@ public class Field {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -37,9 +37,30 @@ public class Field {
     @Column(name = "area")
     private Integer area;
 
+    @Column(name = "price")
+    private Integer price;
+
     @ManyToOne
     @JoinColumn(name = "type_id", nullable = false)
     private FieldType fieldType;
+
+    public Field() {
+    }
+
+    public Field(int id, String name, String address, Integer area, FieldType fieldType) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.area = area;
+        this.fieldType = fieldType;
+    }
+
+    public Field(String name, String address, Integer area, FieldType fieldType) {
+        this.name = name;
+        this.address = address;
+        this.area = area;
+        this.fieldType = fieldType;
+    }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "field")
     private List<BookingRequest> bookingRequests;
@@ -50,11 +71,11 @@ public class Field {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "field")
     private List<Rating> ratings;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -130,6 +151,14 @@ public class Field {
         return updatedAt;
     }
 
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
     @Override
     public String toString() {
         return "Field{" +
@@ -138,6 +167,7 @@ public class Field {
                 ", address='" + address + '\'' +
                 ", image='" + image + '\'' +
                 ", area=" + area +
+                ", price=" + price +
                 ", fieldType=" + fieldType.toString() +
                 '}';
     }
