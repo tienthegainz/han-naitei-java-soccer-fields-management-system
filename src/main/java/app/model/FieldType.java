@@ -13,7 +13,7 @@ public class FieldType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -28,14 +28,23 @@ public class FieldType {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "photo_url")
+    private String photoURL;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "fieldType")
     private List<Field> fields;
+
+    public FieldType() {
+    }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -45,6 +54,22 @@ public class FieldType {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getPhotoURL() {
+        return photoURL;
+    }
+
+    public void setPhotoURL(String photoURL) {
+        this.photoURL = photoURL;
     }
 
     public List<Field> getFields() {
@@ -63,12 +88,15 @@ public class FieldType {
         return updatedAt;
     }
 
+    @Override
     public String toString() {
         return "FieldType{" +
                 "id=" + id +
-                ", created_at=" + createdAt.toString() +
-                ", updated_at=" + updatedAt.toString() +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
                 ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", photoURL='" + photoURL + '\'' +
                 '}';
     }
 }
