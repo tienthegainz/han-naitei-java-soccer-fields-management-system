@@ -3,6 +3,6 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="views/layout/base-layout">
 <div layout:fragment="body">
-    <h2 class="warning">Sorry, you do not have permission to view this page.</h2>
+    <h2 class="error-page" th:text="${errorMsg}">ERROR HERE</h2>
 </div>
 </html>
