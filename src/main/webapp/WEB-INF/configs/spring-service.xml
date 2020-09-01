@@ -6,5 +6,20 @@
 
 	<!-- Declare Service here-->
 	<!--		TODO -->
+	<bean id="UserService" parent="baseTransactionProxy">
+		<property name="target">
+			<bean class="app.service.impl.UserServiceImpl">
+				<property name="userDAO" ref="userDAO" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="myUserDetailsService" parent="baseTransactionProxy">
+		<property name="target">
+			<bean class="app.service.impl.MyUserDetailsServiceImpl">
+				<property name="userDAO" ref="userDAO" />
+			</bean>
+		</property>
+	</bean>
 
 </beans>
