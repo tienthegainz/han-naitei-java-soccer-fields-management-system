@@ -22,8 +22,6 @@
 
 		<remember-me key="uniqueAndSecret" token-validity-seconds="86400"/>
 
-		<access-denied-handler error-page="/accessDenied"/>
-
 	</http>
 	<authentication-manager>
 		<authentication-provider user-service-ref="myUserDetailsService">
