@@ -23,9 +23,11 @@
                 <div class="dropdown-menu dropdown-menu-right"
                      style="max-width: 100px; min-width: 50px"
                 >
-                    <a href="#" class="dropdown-item">EN</a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">JP</a>
+                    <div th:with="url=${#httpServletRequest.requestURI}">
+                        <a href="#" th:href="@{__${url}__?lang=en}" class="dropdown-item">EN</a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" th:href="@{__${url}__?lang=jp}" class="dropdown-item">JP</a>
+                    </div>
                 </div>
             </li>
             <div sec:authorize="isAuthenticated()">
