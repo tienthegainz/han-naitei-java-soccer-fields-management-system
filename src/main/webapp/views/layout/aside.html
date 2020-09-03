@@ -1,5 +1,5 @@
 <!-- sidebar: style can be found in sidebar.less -->
-<div class="sidebar" th:fragment="aside">
+<div class="sidebar" th:fragment="aside" xmlns:sec="http://www.w3.org/1999/xhtml">
     <a href="#" th:href="@{/}" class="brand-link">
         <span class="brand-text font-weight-light">Football Management</span>
     </a>
@@ -7,59 +7,112 @@
     <!-- Sidebar -->
     <div class="sidebar">
         <!-- Sidebar user panel (optional) -->
-        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
-            <div class="image">
-                <img th:src="@{/assets/AdminLTE/dist/img/user2-160x160.jpg}" class="img-circle elevation-2"
-                     alt="User Image">
+        <div sec:authorize="isAnonymous()">
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="image">
+                    <img th:src="@{/assets/AdminLTE/dist/img/user2-160x160.jpg}" class="img-circle elevation-2"
+                         alt="User Image">
+                </div>
+
+                    <div class="info">
+                        <a href="#" class="d-block">Anonymous</a>
+                    </div>
             </div>
-            <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+        </div>
+        <div sec:authorize="isAuthenticated()">
+            <div th:with="user=${#authentication.getPrincipal().getUser()}">
+                <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                    <div class="image">
+                        <img th:src="@{${user.getAvatar()}}" class="img-circle elevation-2"
+                             alt="User Image">
+                    </div>
+                    <div class="info">
+                        <a href="#" th:href="@{/users/__${user.getId()}__}"
+                           class="d-block" th:text="${user.getUsername()}">
+                            A
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            User
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="/field-types" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Field Type
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Field
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Booking Request
-                        </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-th"></i>
-                        <p>
-                            Payment
-                        </p>
-                    </a>
-                </li>
+                <div sec:authorize="hasRole('ROLE_ADMIN')">
+                    <li class="nav-item">
+                        <a href="#" th:href="@{/users}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Manage users
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" th:href="@{/bookings}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Manage Booking
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" th:href="@{/payments}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Manage Payment
+                            </p>
+                        </a>
+                    </li>
+                </div>
+
+                <div sec:authorize="hasRole('ROLE_USER')">
+                    <div th:with="id=${#authentication.getPrincipal().getUser().getId()}">
+                        <li class="nav-item">
+                            <a href="#" th:href="@{/users/__${id}__/bookings}" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    Booking Request
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#" th:href="@{/users/__${id}__/payments}" class="nav-link">
+                                <i class="nav-icon fas fa-th"></i>
+                                <p>
+                                    Payment
+                                </p>
+                            </a>
+                        </li>
+                    </div>
+                </div>
+
+                <div>
+                    <li class="nav-item">
+                        <a href="/field-types" th:href="@{/field-types}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Field Types
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" th:href="@{/fields}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Fields
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#" th:href="@{/reviews}" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>
+                                Review
+                            </p>
+                        </a>
+                    </li>
+                </div>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
