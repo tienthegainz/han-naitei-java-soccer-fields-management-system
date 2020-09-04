@@ -73,6 +73,7 @@ public class FieldTypeController {
         String title = "Edit Field Type";
 
         FieldType fieldType = fieldTypeService.findFieldType(id);
+
         if (fieldType == null) {
             redirectAttributes.addFlashAttribute("status", "error");
             redirectAttributes.addFlashAttribute("message", "Field type not found.");

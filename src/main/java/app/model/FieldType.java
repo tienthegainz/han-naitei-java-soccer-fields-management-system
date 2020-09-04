@@ -40,6 +40,19 @@ public class FieldType {
     public FieldType() {
     }
 
+    public FieldType(int id, String name, String description, String photoURL) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.photoURL = photoURL;
+    }
+
+    public FieldType(String name, String description, String photoURL) {
+        this.name = name;
+        this.description = description;
+        this.photoURL = photoURL;
+    }
+
     public int getId() {
         return id;
     }

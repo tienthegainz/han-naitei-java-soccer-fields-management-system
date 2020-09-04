@@ -10,4 +10,7 @@
     <bean id="fieldTypeDAO" class="app.dao.impl.FieldTypeDAOImpl">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
+    <bean id="fieldDAO" class="app.dao.impl.FieldDAOImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
 </beans>
