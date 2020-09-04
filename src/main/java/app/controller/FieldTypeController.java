@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
-public class FieldTypeController {
+public class FieldTypeController extends BaseController {
     private static final Logger logger = Logger.getLogger(FieldTypeController.class);
 
     private final FieldTypeService fieldTypeService;
@@ -42,11 +42,8 @@ public class FieldTypeController {
         String title = "Field Type Details";
 
         FieldType fieldType = fieldTypeService.findFieldType(id);
-        if (fieldType == null) {
-            redirectAttributes.addFlashAttribute("status", "error");
-            redirectAttributes.addFlashAttribute("message", "Field type not found.");
-            return "redirect:/field-types";
-        }
+        if (fieldType == null)
+            return handleRedirect(redirectAttributes, "error", "Field type not found.", "/field-types");
 
         model.addAttribute("title", title);
         model.addAttribute("data", fieldType);
@@ -73,12 +70,8 @@ public class FieldTypeController {
         String title = "Edit Field Type";
 
         FieldType fieldType = fieldTypeService.findFieldType(id);
-
-        if (fieldType == null) {
-            redirectAttributes.addFlashAttribute("status", "error");
-            redirectAttributes.addFlashAttribute("message", "Field type not found.");
-            return "redirect:/field-types";
-        }
+        if (fieldType == null)
+            return handleRedirect(redirectAttributes, "error", "Field type not found.", "/field-types");
 
         FieldTypeInfo fieldTypeInfo = new FieldTypeInfo(fieldType);
 
@@ -93,21 +86,14 @@ public class FieldTypeController {
         logger.info("DELETE");
 
         FieldType fieldType = fieldTypeService.findFieldType(id);
-        if (fieldType == null) {
-            redirectAttributes.addFlashAttribute("status", "error");
-            redirectAttributes.addFlashAttribute("message", "Field type not found.");
-            return "redirect:/field-types";
-        }
 
-        if (fieldTypeService.deleteFieldType(id)) {
-            redirectAttributes.addFlashAttribute("status", "success");
-            redirectAttributes.addFlashAttribute("message", "Field type deleted.");
-        } else {
-            redirectAttributes.addFlashAttribute("status", "error");
-            redirectAttributes.addFlashAttribute("message", "Error deleting field type.");
-        }
+        if (fieldType == null)
+            return handleRedirect(redirectAttributes, "error", "Field type not found.", "/field-types");
 
-        return "redirect:/field-types";
+        if (fieldTypeService.deleteFieldType(id))
+            return handleRedirect(redirectAttributes, "success", "Field type deleted.", "/field-types");
+
+        return handleRedirect(redirectAttributes, "error", "Error deleting field type.", "/field-types");
     }
 
     @PostMapping(path = "/field-types")
@@ -116,29 +102,19 @@ public class FieldTypeController {
 
         fieldTypeInfo.setId(null);
 
-        if (fieldTypeService.createFieldType(fieldTypeInfo)) {
-            redirectAttributes.addFlashAttribute("status", "success");
-            redirectAttributes.addFlashAttribute("message", "Field type created.");
-        } else {
-            redirectAttributes.addFlashAttribute("status", "error");
-            redirectAttributes.addFlashAttribute("message", "Error deleting field type.");
-        }
+        if (fieldTypeService.createFieldType(fieldTypeInfo))
+            return handleRedirect(redirectAttributes, "success", "Field type created.", "/field-types");
 
-        return "redirect:/field-types";
+        return handleRedirect(redirectAttributes, "error", "Error creating field type.", "/field-types");
     }
 
     @PutMapping(path = "/field-types/{id}")
     public String put(@PathVariable("id") int id, FieldTypeInfo fieldTypeInfo, final RedirectAttributes redirectAttributes) {
         logger.info("PUT");
 
-        if (fieldTypeService.updateFieldType(fieldTypeInfo)) {
-            redirectAttributes.addFlashAttribute("status", "success");
-            redirectAttributes.addFlashAttribute("message", "Field type details updated.");
-        } else {
-            redirectAttributes.addFlashAttribute("status", "error");
-            redirectAttributes.addFlashAttribute("message", "Error updating field type details.");
-        }
+        if (fieldTypeService.updateFieldType(fieldTypeInfo))
+            return handleRedirect(redirectAttributes, "success", "Field type details updated.", "/field-types/" + id);
 
-        return "redirect:/field-types/" + id;
+        return handleRedirect(redirectAttributes, "error", "Error updating field type details.", "/field-types/" + id);
     }
 }
