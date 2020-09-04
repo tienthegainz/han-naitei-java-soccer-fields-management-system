@@ -35,9 +35,11 @@ public class FieldTypeServiceImpl extends BaseServiceImpl implements FieldTypeSe
 
     @Override
     public boolean updateFieldType(FieldTypeInfo fieldTypeInfo) {
+        String[] ignoreProperties = {"id"};
+
         try {
             FieldType fieldType = getFieldTypeDAO().findById(fieldTypeInfo.getId(), true);
-            BeanUtils.copyProperties(fieldTypeInfo.toFieldType(), fieldType);
+            BeanUtils.copyProperties(fieldTypeInfo.toFieldType(), fieldType, ignoreProperties);
             getFieldTypeDAO().saveOrUpdate(fieldType);
             logger.info(String.format("Updated Field Type having id: %d", fieldTypeInfo.getId()));
             return true;
