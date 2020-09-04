@@ -14,8 +14,20 @@ public abstract class GenericDAO<PK extends Serializable, T> extends HibernateDa
     @Autowired
     private SessionFactory sessionFactory;
 
+    private Class<T> persistentClass;
+
+    public GenericDAO(Class<T> persistentClass) {
+        this.persistentClass = persistentClass;
+    }
+
+    @SuppressWarnings("unchecked")
+    public GenericDAO() {
+        this.persistentClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass())
+                .getActualTypeArguments()[1];
+    }
+
     public T findById(Serializable key) {
-        return findById(key, true);
+        return findById(key, false);
     }
 
     public T findById(Serializable key, boolean lock) {
@@ -39,24 +51,11 @@ public abstract class GenericDAO<PK extends Serializable, T> extends HibernateDa
         return entity;
     }
 
-    private Class<T> persistentClass;
-
     public Class<T> getPersistentClass() {
         return persistentClass;
-    }
-
-    public GenericDAO(Class<T> persistentClass) {
-        this.persistentClass = persistentClass;
-    }
-
-    @SuppressWarnings("unchecked")
-    public GenericDAO() {
-        this.persistentClass = (Class<T>) ((ParameterizedType) this.getClass().getGenericSuperclass())
-                .getActualTypeArguments()[1];
     }
 
     protected Session getSession() {
         return sessionFactory.getCurrentSession();
     }
-
 }
