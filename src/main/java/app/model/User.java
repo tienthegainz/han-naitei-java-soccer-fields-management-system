@@ -1,10 +1,12 @@
 package app.model;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,9 +15,10 @@ import java.util.List;
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
 
     @Column(name = "username")
     private String username;
@@ -44,35 +47,53 @@ public class User {
 
     @Column(name = "google_id")
     private String google_id;
+
     @Column(name = "role", nullable = false)
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    @OneToMany(mappedBy = "user")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<BookingRequest> bookingRequests;
+
+    @OneToMany(mappedBy = "user")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Payment> payments;
+
+    @OneToMany(mappedBy = "user")
+    @Cascade(CascadeType.ALL)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Review> reviews;
+
+    @OneToMany(mappedBy = "user")
+    @Cascade(CascadeType.ALL)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Comment> comments;
+
+    @ManyToMany
+    @JoinTable(
+            name = "likes",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "review_id")
+    )
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Review> likedReviews;
+
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
     private Date createdAt;
+
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
     private Date updatedAt;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<BookingRequest> bookingRequests;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<Payment> payments;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<Review> reviews;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<Comment> comments;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<Like> likes;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<Rating> ratings;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -122,14 +143,6 @@ public class User {
 
     public void setBirthday(Date birthday) {
         this.birthday = birthday;
-    }
-
-    public Date getCreateAt() {
-        return createdAt;
-    }
-
-    public Date getUpdateAt() {
-        return updatedAt;
     }
 
     public String getAvatar() {
@@ -197,20 +210,28 @@ public class User {
         this.comments = comments;
     }
 
-    public List<Like> getLikes() {
-        return likes;
+    public List<Review> getLikedReviews() {
+        return likedReviews;
     }
 
-    public void setLikes(List<Like> likes) {
-        this.likes = likes;
+    public void setLikedReviews(List<Review> likedReviews) {
+        this.likedReviews = likedReviews;
     }
 
-    public List<Rating> getRatings() {
-        return ratings;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setRatings(List<Rating> ratings) {
-        this.ratings = ratings;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -232,13 +253,13 @@ public class User {
                 '}';
     }
 
-    public enum Role {
-        ADMIN, USER
-    }
-
     public List<GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority(this.getRole()));
         return authorities;
+    }
+
+    public enum Role {
+        ADMIN, USER
     }
 }

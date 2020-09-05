@@ -1,8 +1,10 @@
 package app.model;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.*;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -13,7 +15,30 @@ public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
+
+    @Column(name = "content")
+    private String content;
+
+    @Column(name = "rating")
+    private Integer rating;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "field_id")
+    private Field field;
+
+    @ManyToMany(mappedBy = "likedReviews")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<User> likedUsers;
+
+    @OneToMany(mappedBy = "review")
+    @Cascade(CascadeType.ALL)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Comment> comments;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -25,28 +50,14 @@ public class Review {
     @UpdateTimestamp
     private Date updatedAt;
 
-    @Column(name = "content")
-    private String content;
+    public Review() {
+    }
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "field_id")
-    private Field field;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "review")
-    private List<Like> likes;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "review")
-    private List<Comment> comments;
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -56,6 +67,14 @@ public class Review {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
     }
 
     public User getUser() {
@@ -74,12 +93,12 @@ public class Review {
         this.field = field;
     }
 
-    public List<Like> getLikes() {
-        return likes;
+    public List<User> getLikedUsers() {
+        return likedUsers;
     }
 
-    public void setLikes(List<Like> likes) {
-        this.likes = likes;
+    public void setLikedUsers(List<User> likedUsers) {
+        this.likedUsers = likedUsers;
     }
 
     public List<Comment> getComments() {
@@ -90,12 +109,20 @@ public class Review {
         this.comments = comments;
     }
 
-    public Date getCreateAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public Date getUpdateAt() {
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override

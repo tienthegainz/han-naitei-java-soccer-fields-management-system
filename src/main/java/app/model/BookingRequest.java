@@ -1,6 +1,8 @@
 package app.model;
 
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
@@ -8,22 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="booking_requests")
+@Table(name = "booking_requests")
 public class BookingRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    @Column(name = "created_at", updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    private Date createdAt;
-
-    @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    @UpdateTimestamp
-    private Date updatedAt;
+    private Integer id;
 
     @Column(name = "from_date")
     @Temporal(TemporalType.TIMESTAMP)
@@ -35,24 +27,34 @@ public class BookingRequest {
     @UpdateTimestamp
     private Date toDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "field_id")
     private Field field;
 
-    public enum Status {
-        APPROVE, REJECT, CANCEL
-    }
-
     @Column(name = "status", nullable = false)
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private Status status = Status.PENDING;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bookingRequest")
+    @OneToMany(mappedBy = "bookingRequest")
+    @Fetch(FetchMode.SUBSELECT)
     private List<Payment> payments;
+
+    @Column(name = "created_at", updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
+    private Date updatedAt;
+
+    public BookingRequest() {
+    }
 
     public Date getFromDate() {
         return fromDate;
@@ -102,20 +104,28 @@ public class BookingRequest {
         this.payments = payments;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
-    public Date getCreateAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public Date getUpdateAt() {
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -130,5 +140,9 @@ public class BookingRequest {
                 ", field=" + field.toString() +
                 ", status=" + status +
                 '}';
+    }
+
+    public enum Status {
+        PENDING, APPROVED, REJECTED, CANCELED
     }
 }
