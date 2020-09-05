@@ -1,13 +1,18 @@
 package app.controller;
 
 import app.info.FieldInfo;
+
 import app.service.FieldService;
+import app.service.FieldTypeService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -18,10 +23,12 @@ public class FieldController extends BaseController {
     private static final Logger logger = Logger.getLogger(FieldController.class);
 
     private final FieldService fieldService;
+    private final FieldTypeService fieldTypeService;
 
     @Autowired
-    public FieldController(FieldService fieldService) {
+    public FieldController(FieldService fieldService, FieldTypeService fieldTypeService) {
         this.fieldService = fieldService;
+        this.fieldTypeService = fieldTypeService;
     }
 
     @GetMapping(path = "/fields")
@@ -61,5 +68,32 @@ public class FieldController extends BaseController {
         model.addAttribute("data", fieldInfo);
 
         return "views/fields/show";
+    }
+
+    @GetMapping(path = "/fields/create")
+    public String create(Model model) {
+        logger.info("Create");
+        String title = "Create New Field Type";
+
+        FieldInfo fieldInfo = new FieldInfo();
+
+        model.addAttribute("title", title);
+        model.addAttribute("fieldForm", fieldInfo);
+        model.addAttribute("fieldTypes", fieldTypeService.loadFieldTypes());
+
+
+        return "views/fields/create";
+    }
+
+    @PostMapping(path = "/fields")
+    public String post(FieldInfo fieldInfo, final RedirectAttributes redirectAttributes) {
+        logger.info("POST");
+
+        fieldInfo.setId(null);
+
+        if (fieldService.createField(fieldInfo))
+            return handleRedirect(redirectAttributes, "success", "Field type created.", "/fields");
+
+        return handleRedirect(redirectAttributes, "error", "Error creating field type.", "/fields");
     }
 }

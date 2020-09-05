@@ -17,7 +17,7 @@
 	<context:component-scan base-package="app.*" />
 
 	<!-- Use for json response -->
-	<mvc:annotation-driven>
+	<mvc:annotation-driven conversion-service="conversionService">
 		<mvc:message-converters>
 			<bean class="org.springframework.http.converter.StringHttpMessageConverter" />
 		</mvc:message-converters>
@@ -35,6 +35,14 @@
 		<property name="defaultLocale" value="en"/>
 <!--		<property name="cookieName" value="myAppLocaleCookie"/>-->
 <!--		<property name="cookieMaxAge" value="3600"/>-->
+	</bean>
+
+	<bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+		<property name="converters">
+			<set>
+				<bean class="app.util.FieldTypeConverter"/>
+			</set>
+		</property>
 	</bean>
 
 	<mvc:interceptors>
