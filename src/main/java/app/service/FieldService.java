@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface FieldService {
 
-    Field findField(Integer id);
+    FieldInfo findField(Integer id);
 
     boolean createField(FieldInfo field);
 
     boolean updateField(FieldInfo field);
 
-    Field findByName(String name);
+    FieldInfo findByName(String name);
 
-    List<Field> searchFields(String key);
+    List<FieldInfo> searchFields(String key);
 
-    List<Field> loadFields();
+    List<FieldInfo> loadFields();
 }
