@@ -4,7 +4,7 @@ import app.model.Field;
 import app.model.FieldType;
 import org.springframework.beans.BeanUtils;
 
-public class FieldInfo {
+public class FieldInfo extends BaseInfo{
 
     private Integer id;
 
