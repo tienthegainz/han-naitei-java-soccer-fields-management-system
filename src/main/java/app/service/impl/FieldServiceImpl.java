@@ -1,11 +1,11 @@
 package app.service.impl;
 
 import app.info.FieldInfo;
-import app.info.FieldTypeInfo;
 import app.model.Field;
 import app.service.FieldService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,12 +62,28 @@ public class FieldServiceImpl extends BaseServiceImpl implements FieldService {
         }
     }
 
+//    @Override
+//    public List<FieldInfo> searchFields(String key) {
+//        try {
+//            List<Field> fields = getFieldDAO().searchFields(key);
+//            logger.info(String.format("Search Field with: %s", key));
+//            return fields.stream().map(FieldInfo::new).collect(Collectors.toList());
+//        } catch (Exception e) {
+//            logger.error(e);
+//            return null;
+//        }
+//    }
+
     @Override
-    public List<FieldInfo> searchFields(String key) {
+    public Page<FieldInfo> searchFields(String key, FieldInfo fieldInfo) {
         try {
-            List<Field> fields = getFieldDAO().searchFields(key);
+            Page<Field> fields = getFieldDAO().searchFields(key, fieldInfo.getPageable());
             logger.info(String.format("Search Field with: %s", key));
-            return fields.stream().map(FieldInfo::new).collect(Collectors.toList());
+            return fields.map(field -> {
+                FieldInfo model = new FieldInfo();
+                BeanUtils.copyProperties(field, model);
+                return model;
+            });
         } catch (Exception e) {
             logger.error(e);
             return null;
@@ -82,6 +98,21 @@ public class FieldServiceImpl extends BaseServiceImpl implements FieldService {
             return fields.stream().map(FieldInfo::new).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error(e);
+            return null;
+        }
+    }
+
+    @Override
+    public Page<FieldInfo> paginate(FieldInfo fieldInfo) {
+        try {
+            Page<Field> fields = getFieldDAO().paginateField(fieldInfo.getPageable());
+            return fields.map(field -> {
+                FieldInfo model = new FieldInfo();
+                BeanUtils.copyProperties(field, model);
+                return model;
+            });
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
             return null;
         }
     }
