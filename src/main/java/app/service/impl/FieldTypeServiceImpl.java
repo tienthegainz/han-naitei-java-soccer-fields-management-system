@@ -7,14 +7,16 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FieldTypeServiceImpl extends BaseServiceImpl implements FieldTypeService {
     private static final Logger logger = Logger.getLogger(FieldTypeServiceImpl.class);
 
     @Override
-    public FieldType findFieldType(int id) {
+    public FieldTypeInfo findFieldType(int id) {
         try {
-            return getFieldTypeDAO().findById(id, false);
+            FieldType fieldType = getFieldTypeDAO().findById(id, false);
+            return new FieldTypeInfo(fieldType);
         } catch (Exception e) {
             logger.error(e);
             return null;
@@ -63,11 +65,11 @@ public class FieldTypeServiceImpl extends BaseServiceImpl implements FieldTypeSe
     }
 
     @Override
-    public FieldType findByName(String name) {
+    public FieldTypeInfo findByName(String name) {
         try {
             FieldType fieldType = getFieldTypeDAO().findByName(name);
             logger.info(String.format("Find Field Type with name %s", name));
-            return fieldType;
+            return new FieldTypeInfo(fieldType);
         } catch (Exception e) {
             logger.error(e);
             return null;
@@ -75,11 +77,11 @@ public class FieldTypeServiceImpl extends BaseServiceImpl implements FieldTypeSe
     }
 
     @Override
-    public List<FieldType> loadFieldTypes() {
+    public List<FieldTypeInfo> loadFieldTypes() {
         try {
             List<FieldType> fieldTypes = getFieldTypeDAO().loadFieldTypes();
             logger.info("Get Field Types list");
-            return fieldTypes;
+            return fieldTypes.stream().map(FieldTypeInfo::new).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error(e);
             return null;
