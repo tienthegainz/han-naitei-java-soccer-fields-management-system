@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface FieldTypeService {
 
-    FieldType findFieldType(int id);
+    FieldTypeInfo findFieldType(int id);
 
     boolean createFieldType(FieldTypeInfo fieldType);
 
@@ -15,7 +15,7 @@ public interface FieldTypeService {
 
     boolean deleteFieldType(int id);
 
-    FieldType findByName(String name);
+    FieldTypeInfo findByName(String name);
 
-    List<FieldType> loadFieldTypes();
+    List<FieldTypeInfo> loadFieldTypes();
 }
