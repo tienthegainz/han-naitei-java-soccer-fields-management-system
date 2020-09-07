@@ -1,8 +1,10 @@
 package app.model;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.*;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
@@ -14,16 +16,6 @@ public class Field {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
-    @Column(name = "created_at", updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreationTimestamp
-    private Date createdAt;
-
-    @Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    @UpdateTimestamp
-    private Date updatedAt;
 
     @Column(name = "name", nullable = false)
     private String name;
@@ -44,6 +36,25 @@ public class Field {
     @JoinColumn(name = "type_id", nullable = false)
     private FieldType fieldType;
 
+    @OneToMany(mappedBy = "field")
+    @Fetch(FetchMode.SUBSELECT)
+    private List<BookingRequest> bookingRequests;
+
+    @OneToMany(mappedBy = "field")
+    @Cascade(CascadeType.ALL)
+    @Fetch(FetchMode.SUBSELECT)
+    private List<Review> reviews;
+
+    @Column(name = "created_at", updatable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
+    private Date createdAt;
+
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
+    private Date updatedAt;
+
     public Field() {
     }
 
@@ -61,15 +72,6 @@ public class Field {
         this.area = area;
         this.fieldType = fieldType;
     }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "field")
-    private List<BookingRequest> bookingRequests;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "field")
-    private List<Review> reviews;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "field")
-    private List<Rating> ratings;
 
     public Integer getId() {
         return id;
@@ -135,28 +137,28 @@ public class Field {
         this.reviews = reviews;
     }
 
-    public List<Rating> getRatings() {
-        return ratings;
-    }
-
-    public void setRatings(List<Rating> ratings) {
-        this.ratings = ratings;
-    }
-
-    public Date getCreateAt() {
-        return createdAt;
-    }
-
-    public Date getUpdateAt() {
-        return updatedAt;
-    }
-
     public Integer getPrice() {
         return price;
     }
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override

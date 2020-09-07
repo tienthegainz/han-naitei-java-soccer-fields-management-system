@@ -12,7 +12,22 @@ public class Payment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Integer id;
+
+    @Column(name = "amount", nullable = false)
+    private Long amount;
+
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Status status = Status.PENDING;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "booking_request_id")
+    private BookingRequest bookingRequest;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -24,25 +39,14 @@ public class Payment {
     @UpdateTimestamp
     private Date updatedAt;
 
-    @Column(name = "amount", nullable = false)
-    private Long amount;
+    public Payment() {
+    }
 
-    @Column(name = "paid", nullable = false)
-    private Boolean paid;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "booking_request_id")
-    private BookingRequest bookingRequest;
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -54,12 +58,12 @@ public class Payment {
         this.amount = amount;
     }
 
-    public Boolean getPaid() {
-        return paid;
+    public Status getStatus() {
+        return status;
     }
 
-    public void setPaid(Boolean paid) {
-        this.paid = paid;
+    public void setStatus(Status status) {
+        this.status = status;
     }
 
     public User getUser() {
@@ -78,12 +82,20 @@ public class Payment {
         this.bookingRequest = bookingRequest;
     }
 
-    public Date getCreateAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public Date getUpdateAt() {
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
         return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     @Override
@@ -93,9 +105,13 @@ public class Payment {
                 ", created_at=" + createdAt.toString() +
                 ", updated_at=" + updatedAt.toString() +
                 ", amount=" + amount +
-                ", paid=" + paid +
+                ", status=" + status +
                 ", user=" + user.toString() +
                 ", bookingRequest=" + bookingRequest.toString() +
                 '}';
+    }
+
+    public enum Status {
+        PENDING, SUCCESSFUL, FAILED, CANCELED
     }
 }
