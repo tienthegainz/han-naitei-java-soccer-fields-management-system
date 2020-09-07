@@ -1,7 +1,6 @@
 package app.controller;
 
 import app.info.FieldTypeInfo;
-import app.model.FieldType;
 import app.service.FieldTypeService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +40,12 @@ public class FieldTypeController extends BaseController {
         logger.info("Show");
         String title = "Field Type Details";
 
-        FieldType fieldType = fieldTypeService.findFieldType(id);
-        if (fieldType == null)
+        FieldTypeInfo fieldTypeInfo = fieldTypeService.findFieldType(id);
+        if (fieldTypeInfo == null)
             return handleRedirect(redirectAttributes, "error", "Field type not found.", "/field-types");
 
         model.addAttribute("title", title);
-        model.addAttribute("data", fieldType);
+        model.addAttribute("data", fieldTypeInfo);
 
         return "views/field-types/show";
     }
@@ -69,11 +68,10 @@ public class FieldTypeController extends BaseController {
         logger.info("Edit");
         String title = "Edit Field Type";
 
-        FieldType fieldType = fieldTypeService.findFieldType(id);
-        if (fieldType == null)
-            return handleRedirect(redirectAttributes, "error", "Field type not found.", "/field-types");
+        FieldTypeInfo fieldTypeInfo = fieldTypeService.findFieldType(id);
 
-        FieldTypeInfo fieldTypeInfo = new FieldTypeInfo(fieldType);
+        if (fieldTypeInfo == null)
+            return handleRedirect(redirectAttributes, "error", "Field type not found.", "/field-types");
 
         model.addAttribute("title", title);
         model.addAttribute("fieldTypeForm", fieldTypeInfo);
@@ -85,9 +83,9 @@ public class FieldTypeController extends BaseController {
     public String delete(@PathVariable("id") int id, final RedirectAttributes redirectAttributes) {
         logger.info("DELETE");
 
-        FieldType fieldType = fieldTypeService.findFieldType(id);
+        FieldTypeInfo fieldTypeInfo = fieldTypeService.findFieldType(id);
 
-        if (fieldType == null)
+        if (fieldTypeInfo == null)
             return handleRedirect(redirectAttributes, "error", "Field type not found.", "/field-types");
 
         if (fieldTypeService.deleteFieldType(id))
