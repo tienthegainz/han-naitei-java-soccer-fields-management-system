@@ -1,6 +1,6 @@
 package app.controller;
 
-import app.model.Field;
+import app.info.FieldInfo;
 import app.service.FieldService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,13 +42,13 @@ public class FieldController extends BaseController {
     public String show(@PathVariable("id") int id, Model model, final RedirectAttributes redirectAttributes) {
         String title = "Field Details";
 
-        Field field = fieldService.findField(id);
+        FieldInfo fieldInfo = fieldService.findField(id);
 
-        if (field == null)
+        if (fieldInfo == null)
             return handleRedirect(redirectAttributes, "error", "Field type not found.", "/fields");
 
         model.addAttribute("title", title);
-        model.addAttribute("data", field);
+        model.addAttribute("data", fieldInfo);
 
         return "views/fields/show";
     }

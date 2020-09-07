@@ -10,6 +10,8 @@ public class FieldInfo {
 
     private String name;
 
+    private String image;
+
     private String address;
 
     private Integer area;
@@ -21,9 +23,10 @@ public class FieldInfo {
     public FieldInfo() {
     }
 
-    public FieldInfo(Integer id, String name, String address, Integer area, Integer price, FieldType fieldType) {
+    public FieldInfo(Integer id, String name, String image, String address, Integer area, Integer price, FieldType fieldType) {
         this.id = id;
         this.name = name;
+        this.image = image;
         this.address = address;
         this.area = area;
         this.price = price;
@@ -33,6 +36,7 @@ public class FieldInfo {
     public FieldInfo(Field field) {
         this.id = field.getId();
         this.name = field.getName();
+        this.image = field.getImage();
         this.address = field.getAddress();
         this.area = field.getArea();
         this.price = field.getPrice();
@@ -77,6 +81,14 @@ public class FieldInfo {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public FieldType getFieldType() {
