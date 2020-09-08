@@ -8,6 +8,8 @@ public interface UserService {
 
     User getCurrentUser();
 
+    boolean create(UserInfo userInfo);
+
     Page<UserInfo> paginate(UserInfo userInfo);
 
     User findByEmail(String email);

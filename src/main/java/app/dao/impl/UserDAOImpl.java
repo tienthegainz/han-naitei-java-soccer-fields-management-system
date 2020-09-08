@@ -24,6 +24,12 @@ public class UserDAOImpl extends GenericDAO<Integer, User> implements UserDAO {
     }
 
     @Override
+    public boolean checkNewEmail(String email) {
+        User user = findByEmail(email);
+        return user == null;
+    }
+
+    @Override
     public Page<User> paginateUser(Pageable pageable) {
         String sql = "FROM User";
         String countSql = "SELECT COUNT(*) FROM User";

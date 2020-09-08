@@ -5,11 +5,18 @@ import app.model.User;
 import app.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 public class UserServiceImpl extends BaseServiceImpl implements UserService {
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
+
+    @Autowired
+    @Qualifier(value = "encoder")
+    BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public User getCurrentUser() {
@@ -30,6 +37,32 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
         } catch (Exception e) {
             logger.error(e);
             return null;
+        }
+    }
+
+    @Override
+    public boolean create(UserInfo userInfo) {
+        try {
+            if (userInfo.validatePassword()){
+                if (getUserDAO().checkNewEmail(userInfo.getEmail())) {
+                    userInfo.setPassword(bCryptPasswordEncoder.encode(userInfo.getPassword()));
+                    userInfo.setAvatar("https://i4.sndcdn.com/avatars-Pjqz7m3i6m0ey3dt-C1i2vg-t200x200.jpg");
+                    User user = userInfo.toUser();
+                    user.setRole(User.Role.USER);
+                    getUserDAO().saveOrUpdate(user);
+                    logger.info("Created new User");
+                    return true;
+                }
+                else logger.warn(String.format("Email existed: %s", userInfo.getEmail()));
+            }
+            else logger.warn(String.format("Password not correct %s -- %s",
+                    userInfo.getPassword(), userInfo.getConfirmPassword()));
+
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e);
+            throw e;
         }
     }
 

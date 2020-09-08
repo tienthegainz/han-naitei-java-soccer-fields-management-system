@@ -2,7 +2,10 @@ package app.info;
 
 import app.model.User;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.Date;
 
@@ -33,14 +36,14 @@ public class UserInfo extends BaseInfo{
 
     private String google_id;
 
-    private String role;
+    private User.Role role;
 
     public UserInfo() {
     }
 
     public UserInfo(Integer id, String username, String password, String confirmPassword, String email,
                     String phone, String name, Date birthday, String avatar,
-                    String facebook_id, String google_id, String role, Date createdAt) {
+                    String facebook_id, String google_id, User.Role role, Date createdAt) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -159,11 +162,11 @@ public class UserInfo extends BaseInfo{
         this.google_id = google_id;
     }
 
-    public String getRole() {
+    public User.Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(User.Role role) {
         this.role = role;
     }
 
@@ -176,8 +179,9 @@ public class UserInfo extends BaseInfo{
     }
 
     public boolean validatePassword(){
-        return (this.password == this.confirmPassword);
+        return (this.password.equals(this.confirmPassword));
     }
+
 
     public User toUser(){
         User user = new User();
