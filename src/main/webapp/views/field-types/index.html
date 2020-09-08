@@ -3,13 +3,17 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorate="~{views/layout/base-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">Field Types</title>
+</head>
 
 <div layout:fragment="body">
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0 text-dark" th:text="${title}">Field Type List</h1>
+                    <h1 class="m-0 text-dark" th:text="${title}">Field Types</h1>
                     <a class="btn btn-info" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/field-types/create}"
                        type="button">
                         Create New
@@ -35,8 +39,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <th:block th:each="fieldType,iter : ${data}">
-                                    <tr th:style="${iter.odd}? 'background-color: #efeded;'">
+                                <th:block th:each="fieldType, iter : ${data}">
+                                    <tr th:style="${iter.odd} ? 'background-color: #efeded;'">
                                         <th scope="row" th:text="${fieldType.id}"></th>
                                         <td th:text="${fieldType.name}"></td>
                                         <td th:text="${fieldType.description}"></td>
@@ -60,11 +64,3 @@
     </section>
 </div>
 </html>
-
-<script>
-    const status = "[[${status}]]";
-    const message = "[[${message}]]";
-
-    if (status && message)
-        showToast(status, message);
-</script>

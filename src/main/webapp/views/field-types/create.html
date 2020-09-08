@@ -2,13 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{views/layout/base-layout}">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title}">Create New Field Types</title>
+</head>
 
 <div layout:fragment="body">
     <section class="content">
         <div class="container-fluid">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title" th:text="${title}">Create Field Type</h3>
+                    <h3 class="card-title">Create New Field Type</h3>
                 </div>
                 <div class="card-body">
                     <form action="#" th:action="@{'/field-types'}" th:method="POST" th:object="${fieldTypeForm}">

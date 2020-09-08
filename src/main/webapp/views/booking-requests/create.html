@@ -52,14 +52,5 @@
 </div>
 <th:block layout:fragment="script">
     <script th:src="@{/assets/js/booking-requests/create.js}"></script>
-    <script>
-        const status = "[[${status}]]";
-        const message = "[[${message}]]";
-
-        if (status && message)
-            showToast(status, message);
-    </script>
 </th:block>
 </html>
-
-

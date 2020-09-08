@@ -16,14 +16,6 @@ public class FieldTypeInfo {
     public FieldTypeInfo() {
     }
 
-
-    public FieldTypeInfo(Integer id, String name, String description, String photoURL) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.photoURL = photoURL;
-    }
-
     public FieldTypeInfo(FieldType fieldType) {
         this.id = fieldType.getId();
         this.name = fieldType.getName();
