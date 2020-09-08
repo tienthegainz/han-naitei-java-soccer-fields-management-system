@@ -11,12 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 @Controller
@@ -54,7 +58,6 @@ public class UserController extends BaseController {
 
     @GetMapping(path = {"/register", "users/register"})
     public String register(Model model){
-        logger.info("Create");
 
         UserInfo userInfo = new UserInfo();
 
@@ -64,14 +67,17 @@ public class UserController extends BaseController {
     }
 
     @PostMapping(path = "/users")
-    public String post(UserInfo userInfo) {
-        logger.info("POST");
+    public String post(@ModelAttribute("userForm") @Valid UserInfo userInfo, BindingResult bindingResult, Model model) {
 
         userInfo.setId(null);
 
-        if (userService.create(userInfo))
+        if (bindingResult.hasErrors()){
+            logger.warn("Validation got errors");
+            return "views/auth/register";
+        }
+        else if (userService.create(userInfo))
             return "redirect:/login";
 
-        return "redirect:/register";
+        return "views/auth/register";
     }
 }

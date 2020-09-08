@@ -15,7 +15,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class FieldTypeController extends BaseController {
-    private static final Logger logger = Logger.getLogger(FieldTypeController.class);
 
     private final FieldTypeService fieldTypeService;
 
@@ -26,7 +25,6 @@ public class FieldTypeController extends BaseController {
 
     @GetMapping(path = "/field-types")
     public ModelAndView index() {
-        logger.info("Index");
         ModelAndView model = new ModelAndView("views/field-types/index");
         String title = "Field Types";
 
@@ -37,7 +35,6 @@ public class FieldTypeController extends BaseController {
 
     @GetMapping(path = "/field-types/{id}")
     public String show(@PathVariable("id") int id, Model model, final RedirectAttributes redirectAttributes) {
-        logger.info("Show");
 
         FieldTypeInfo fieldTypeInfo = fieldTypeService.findFieldType(id);
         if (fieldTypeInfo == null)
@@ -53,7 +50,6 @@ public class FieldTypeController extends BaseController {
 
     @GetMapping(path = "/field-types/create")
     public String create(Model model) {
-        logger.info("Create");
         String title = "Create New Field Type";
 
         FieldTypeInfo fieldTypeInfo = new FieldTypeInfo();
@@ -66,7 +62,6 @@ public class FieldTypeController extends BaseController {
 
     @GetMapping(path = "/field-types/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model, final RedirectAttributes redirectAttributes) {
-        logger.info("Edit");
 
         FieldTypeInfo fieldTypeInfo = fieldTypeService.findFieldType(id);
 
@@ -83,7 +78,6 @@ public class FieldTypeController extends BaseController {
 
     @GetMapping("/field-types/{id}/delete")
     public String delete(@PathVariable("id") int id, final RedirectAttributes redirectAttributes) {
-        logger.info("DELETE");
 
         FieldTypeInfo fieldTypeInfo = fieldTypeService.findFieldType(id);
 
@@ -98,7 +92,6 @@ public class FieldTypeController extends BaseController {
 
     @PostMapping(path = "/field-types")
     public String post(FieldTypeInfo fieldTypeInfo, final RedirectAttributes redirectAttributes) {
-        logger.info("POST");
 
         fieldTypeInfo.setId(null);
 
@@ -110,7 +103,6 @@ public class FieldTypeController extends BaseController {
 
     @PutMapping(path = "/field-types/{id}")
     public String put(@PathVariable("id") int id, FieldTypeInfo fieldTypeInfo, final RedirectAttributes redirectAttributes) {
-        logger.info("PUT");
 
         if (fieldTypeService.updateFieldType(fieldTypeInfo))
             return handleRedirect(redirectAttributes, "success", "Field type details updated.", "/field-types/" + id);

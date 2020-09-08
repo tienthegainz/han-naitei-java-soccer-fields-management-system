@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 public class UserInfo extends BaseInfo{
@@ -15,6 +17,8 @@ public class UserInfo extends BaseInfo{
 
     private String username;
 
+    @NotBlank
+    @Size(min = 5, max = 20, message = "Password length must be between 5 and 20")
     private String password;
 
     private String confirmPassword;
