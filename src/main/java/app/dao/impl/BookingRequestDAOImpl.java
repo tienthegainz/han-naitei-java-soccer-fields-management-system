@@ -7,7 +7,6 @@ import app.model.BookingRequest;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 
-import java.util.Date;
 import java.util.List;
 
 public class BookingRequestDAOImpl extends GenericDAO<Integer, BookingRequest> implements BookingRequestDAO {
@@ -22,7 +21,23 @@ public class BookingRequestDAOImpl extends GenericDAO<Integer, BookingRequest> i
 
     @Override
     public List<BookingRequest> loadBookingRequests() {
-        return getSession().createQuery("FROM BookingRequest").getResultList();
+        return getSession().createQuery("FROM BookingRequest ORDER BY updatedAt DESC").getResultList();
+    }
+
+    @Override
+    public List<BookingRequest> loadBookingRequestsByStatus(BookingRequest.Status status) {
+        Query query = getSession().createQuery("FROM BookingRequest WHERE status = :status ORDER BY updatedAt DESC");
+        query.setParameter("status", status);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<BookingRequest> loadBookingRequestsOfUserByStatus(BookingRequest.Status status, int user_id) {
+        logger.info("USER ID:" + user_id);
+        Query query = getSession().createQuery("FROM BookingRequest WHERE status = :status AND user.id = :user_id ORDER BY updatedAt DESC");
+        query.setParameter("status", status);
+        query.setParameter("user_id", user_id);
+        return query.getResultList();
     }
 
     @Override
