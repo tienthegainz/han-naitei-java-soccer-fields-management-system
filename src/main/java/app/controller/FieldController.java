@@ -31,7 +31,7 @@ public class FieldController extends BaseController {
         this.fieldTypeService = fieldTypeService;
     }
 
-    @GetMapping(path = "/fields")
+    @GetMapping(path = {"/fields", "/"})
     public ModelAndView index(@RequestParam(value = "search", required = false) String search,
                               @RequestParam(name = "page", required = false) Optional<Integer> page) {
 

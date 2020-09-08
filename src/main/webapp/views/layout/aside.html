@@ -42,80 +42,68 @@
         <!-- Sidebar Menu -->
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
-                <div sec:authorize="hasRole('ROLE_ADMIN')">
-                    <li class="nav-item">
-                        <a href="#" th:href="@{/users}" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Manage users
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" th:href="@{/booking-requests}" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Manage Booking
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" th:href="@{/payments}" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Manage Payment
-                            </p>
-                        </a>
-                    </li>
-                </div>
 
-                <div sec:authorize="hasRole('ROLE_USER')">
-                    <div th:with="id=${#authentication.getPrincipal().getUser().getId()}">
-                        <li class="nav-item">
-                            <a href="#" th:href="@{/booking-requests}" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Booking Request
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#" th:href="@{/users/__${id}__/payments}" class="nav-link">
-                                <i class="nav-icon fas fa-th"></i>
-                                <p>
-                                    Payment
-                                </p>
-                            </a>
-                        </li>
-                    </div>
-                </div>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a href="#" th:href="@{/users}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Manage users
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a href="#" th:href="@{/booking-requests}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Manage Booking
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+                    <a href="#" th:href="@{/payments}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Manage Payment
+                        </p>
+                    </a>
+                </li>
 
-                <div>
-                    <li class="nav-item">
-                        <a href="/field-types" th:href="@{/field-types}" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Field Types
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" th:href="@{/fields}" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Fields
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#" th:href="@{/reviews}" class="nav-link">
-                            <i class="nav-icon fas fa-th"></i>
-                            <p>
-                                Review
-                            </p>
-                        </a>
-                    </li>
-                </div>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_USER')">
+                    <a href="#" th:href="@{/booking-requests}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            My Booking Request
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('ROLE_USER')">
+                    <a href="#"
+                       th:href="@{/users/__${#authentication.getPrincipal().getUser().getId()}__/payments}"
+                       class="nav-link"
+                    >
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            My Payment
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="/field-types" th:href="@{/field-types}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Field Types
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" th:href="@{/fields}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Fields
+                        </p>
+                    </a>
+                </li>
             </ul>
         </nav>
         <!-- /.sidebar-menu -->
