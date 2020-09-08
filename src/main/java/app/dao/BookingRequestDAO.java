@@ -9,5 +9,9 @@ public interface BookingRequestDAO extends BaseDAO<Integer, BookingRequest> {
 
     List<BookingRequest> loadBookingRequests();
 
+    List<BookingRequest> loadBookingRequestsByStatus(BookingRequest.Status status);
+
+    List<BookingRequest> loadBookingRequestsOfUserByStatus(BookingRequest.Status status, int user_id);
+
     List<BookingRequest> findByPeriod(BookingRequestInfo bookingRequestInfo);
 }

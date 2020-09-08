@@ -4,15 +4,15 @@
     <meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
     <meta content="width=device-width, initial-scale=1, shrink-to-fit=no"
           name="viewport">
-    <meta th:content="${_csrf.token}" th:name="_csrf" />
-    <meta th:content="${_csrf.headerName}" th:name="_csrf_header" />
-    <link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+   <meta th:name="_csrf" th:content="${_csrf.token}" />
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
           integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-          rel="stylesheet">
-    <link crossorigin="anonymous"
+          crossorigin="anonymous">
+    <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css"
           integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw=="
-          rel="stylesheet" />
+          crossorigin="anonymous" />
     <link rel="stylesheet" th:href="@{/assets/AdminLTE/dist/css/adminlte.min.css}" />
     <link rel="stylesheet" th:href="@{/assets/AdminLTE/plugins/fontawesome-free/css/all.min.css}" />
     <link rel="stylesheet" th:href="@{/assets/AdminLTE/plugins/daterangepicker/daterangepicker.css}" />

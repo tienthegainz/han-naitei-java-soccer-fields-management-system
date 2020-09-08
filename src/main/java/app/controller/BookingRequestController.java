@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Controller
@@ -35,18 +36,25 @@ public class BookingRequestController extends BaseController {
     }
 
     @GetMapping(path = "/booking-requests")
-    public ModelAndView index(@RequestParam(value = "search", required = false) String search) {
+    public ModelAndView index(HttpServletRequest request, final RedirectAttributes redirectAttributes, Authentication authentication) {
         logger.info("Index");
-
         ModelAndView model = new ModelAndView("views/booking-requests/index");
         String title = "Booking requests List";
         model.addObject("title", title);
-//        if (search == null) {
-        model.addObject("data", bookingRequestService.loadBookingRequests());
-//        } else {
-//            model.addObject("data", fieldService.searchFields(search));
-//        }
-
+        if (request.isUserInRole("ROLE_ADMIN")) {
+            logger.info("IS ADMIN");
+            model.addObject("approvedList", bookingRequestService.loadBookingRequestsByStatus(BookingRequest.Status.APPROVED));
+            model.addObject("pendingList", bookingRequestService.loadBookingRequestsByStatus(BookingRequest.Status.PENDING));
+            model.addObject("canceledList", bookingRequestService.loadBookingRequestsByStatus(BookingRequest.Status.CANCELED));
+            model.addObject("rejectedList", bookingRequestService.loadBookingRequestsByStatus(BookingRequest.Status.REJECTED));
+        } else {
+            logger.info("IS USER");
+            User user = userService.findByEmail(authentication.getName());
+            model.addObject("approvedList", bookingRequestService.loadBookingRequestsOfUserByStatus(BookingRequest.Status.APPROVED, user.getId()));
+            model.addObject("pendingList", bookingRequestService.loadBookingRequestsOfUserByStatus(BookingRequest.Status.PENDING, user.getId()));
+            model.addObject("canceledList", bookingRequestService.loadBookingRequestsOfUserByStatus(BookingRequest.Status.CANCELED, user.getId()));
+            model.addObject("rejectedList", bookingRequestService.loadBookingRequestsOfUserByStatus(BookingRequest.Status.REJECTED, user.getId()));
+        }
         return model;
     }
 
@@ -90,12 +98,33 @@ public class BookingRequestController extends BaseController {
         }
     }
 
+    @GetMapping("/booking-requests/{id}/delete")
+    public String delete(@PathVariable("id") int id, final RedirectAttributes redirectAttributes, HttpServletRequest request) {
+        logger.info("DELETE");
+        BookingRequestInfo bookingRequestInfo = bookingRequestService.findBookingRequest(id);
+
+        if (bookingRequestInfo == null)
+            return handleRedirect(redirectAttributes, "error", "Booking request not found.", "/booking-requests");
+
+        boolean res = false;
+        if (request.isUserInRole("ROLE_ADMIN")) {
+            res = bookingRequestService.updateBookingRequestStatus(id, BookingRequest.Status.REJECTED);
+        } else if (request.isUserInRole("ROLE_USER")) {
+            res = bookingRequestService.updateBookingRequestStatus(id, BookingRequest.Status.CANCELED);
+        }
+
+        if (res)
+            return handleRedirect(redirectAttributes, "success", "Booking request canceled.", "/booking-requests");
+
+        return handleRedirect(redirectAttributes, "error", "Error deleting booking request.", "/booking-requests");
+    }
+
     @PostMapping(path = "/booking-requests/{id}/approve")
     @ResponseBody
     public String approve(@PathVariable("id") int id) {
         logger.info("APPROVE BOOKING REQUESTS");
         logger.info("ID:" + id);
-        boolean updatedBookingRequest = bookingRequestService.approveBookingRequest(id);
+        boolean updatedBookingRequest = bookingRequestService.updateBookingRequestStatus(id, BookingRequest.Status.APPROVED);
         if (!updatedBookingRequest) {
             return "failed";
         }
