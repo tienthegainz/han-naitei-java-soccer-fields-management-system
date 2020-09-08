@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.w3.org/1999/xhtml"
+      layout:decorate="~{views/layout/base-layout}">
+
+<div layout:fragment="body">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0 text-dark">User List</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <table data-model="fields"
+                                   class="table table-bordered js--dataTable">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Email</th>
+                                    <th scope="col">Username</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Birthday</th>
+                                    <th scope="col">Created At</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <th:block th:each="user,iter : ${data}">
+                                    <tr th:style="${iter.odd}? 'background-color: #efeded;'">
+                                        <th scope="row" th:text="${data.number*user.perPage+iter.count}"></th>
+                                        <td th:text="${user.name}"></td>
+                                        <td th:text="${user.username}"></td>
+                                        <td th:text="${user.name}"></td>
+                                        <td th:text="${user.birthday}"></td>
+                                        <td th:text="${user.createdAt}"></td>
+                                        <td>
+                                            <a class="btn btn-outline-secondary"
+                                               th:href="@{'/users/' + ${user.id}}">Details</a>
+                                            <a class="btn btn-outline-primary"
+                                               th:href="@{'/users/' + ${user.id} + '/edit'}">Edit</a>
+                                            <a class="btn btn-outline-danger"
+                                               th:href="@{'/users/' + ${user.id} + '/delete'}">Delete</a>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                                </tbody>
+                            </table>
+                            <div th:if="${data != null}" class="card-footer clearfix">
+                                <ul class="pagination pagination-sm m-0 float-right">
+                                    <li class="page-item"
+                                        th:attrappend="class=${data.isFirst()} ? disabled"
+                                    >
+                                        <a class="page-link" href="#"
+                                           th:href="${data.hasPrevious()} ? @{/users(page=${data.number})} : 'javascript: void(0);'"
+                                        >
+                                            &laquo;
+                                        </a>
+                                    </li>
+                                    <li th:each="i: ${#numbers.sequence(1, data.totalPages)}">
+                                        <a class="page-link" href="#"
+                                           th:href="@{/users(page=${i})}" th:text=${i}
+                                        >
+                                            1
+                                        </a>
+                                    </li>
+                                    <li class="page-item"
+                                        th:attrappend="class=${data.isLast()} ? disabled"
+                                    >
+                                        <a class="page-link" href="#"
+                                           th:href="${data.hasNext()} ? @{/users(page=${data.number+2})} : 'javascript: void(0);'"
+                                        >
+                                            &raquo;
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</html>
+
+<script>
+    const status = "[[${status}]]";
+    const message = "[[${message}]]";
+
+    if (status && message)
+        showToast(status, message);
+</script>
