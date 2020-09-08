@@ -91,6 +91,7 @@ public class BookingRequestController extends BaseController {
         }
         try {
             bookingRequestInfo.setUser(user);
+            bookingRequestInfo.setStatus(BookingRequest.Status.PENDING);
             bookingRequestService.createBookingRequest(bookingRequestInfo);
             return handleRedirect(redirectAttributes, "success", "Booking request created.", "/booking-requests");
         } catch (Exception e) {
