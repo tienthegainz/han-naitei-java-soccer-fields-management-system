@@ -7,16 +7,16 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class BookingRequestServiceImpl extends BaseServiceImpl implements BookingRequestService {
     private static final Logger logger = Logger.getLogger(BookingRequestServiceImpl.class);
 
     @Override
-    public BookingRequest findBookingRequest(int id) {
+    public BookingRequestInfo findBookingRequest(int id) {
         try {
-            return getBookingRequestDAO().findById(id, false);
+            return new BookingRequestInfo(getBookingRequestDAO().findById(id, false));
         } catch (Exception e) {
             logger.error(e);
             return null;
@@ -66,10 +66,10 @@ public class BookingRequestServiceImpl extends BaseServiceImpl implements Bookin
     }
 
     @Override
-    public List<BookingRequest> loadBookingRequests() {
+    public List<BookingRequestInfo> loadBookingRequests() {
         try {
             logger.info("Get Booking Requests list");
-            return getBookingRequestDAO().loadBookingRequests();
+            return getBookingRequestDAO().loadBookingRequests().stream().map(BookingRequestInfo::new).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error(e);
             return null;
@@ -77,10 +77,10 @@ public class BookingRequestServiceImpl extends BaseServiceImpl implements Bookin
     }
 
     @Override
-    public List<BookingRequest> findByPeriod(BookingRequestInfo bookingRequestInfo) {
+    public List<BookingRequestInfo> findByPeriod(BookingRequestInfo bookingRequestInfo) {
         try {
             logger.info("Get Booking Request In Period");
-            return getBookingRequestDAO().findByPeriod(bookingRequestInfo);
+            return getBookingRequestDAO().findByPeriod(bookingRequestInfo).stream().map(BookingRequestInfo::new).collect(Collectors.toList());
         } catch (Exception e) {
             logger.error(e);
             return null;
