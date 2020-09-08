@@ -9,13 +9,11 @@ import app.service.FieldService;
 import app.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -90,5 +88,17 @@ public class BookingRequestController extends BaseController {
         } catch (Exception e) {
             return handleRedirect(redirectAttributes, "error", "Invalid booking request", "fields/" + bookingRequestInfo.getField().getId() + "/create-booking");
         }
+    }
+
+    @PostMapping(path = "/booking-requests/{id}/approve")
+    @ResponseBody
+    public String approve(@PathVariable("id") int id) {
+        logger.info("APPROVE BOOKING REQUESTS");
+        logger.info("ID:" + id);
+        boolean updatedBookingRequest = bookingRequestService.approveBookingRequest(id);
+        if (!updatedBookingRequest) {
+            return "failed";
+        }
+        return "success";
     }
 }

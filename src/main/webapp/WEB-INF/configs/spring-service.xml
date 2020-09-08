@@ -37,7 +37,7 @@
         </property>
     </bean>
 
-    <bean id="BookingRequetsService" parent="baseTransactionProxy">
+    <bean id="BookingRequestsService" parent="baseTransactionProxy">
         <property name="target">
             <bean class="app.service.impl.BookingRequestServiceImpl">
                 <property name="bookingRequestDAO" ref="bookingRequestDAO" />
