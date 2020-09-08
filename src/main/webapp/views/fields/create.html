@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{views/layout/base-layout}">
+
+<div layout:fragment="body">
+    <section class="content">
+        <div class="container-fluid">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title" th:text="${title}">Create Field Type</h3>
+                </div>
+                <div class="card-body">
+                    <form action="#" th:action="@{'/fields'}" th:method="POST" th:object="${fieldForm}">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Name</label>
+                            <div class="col-sm-10">
+                                <input class="form-control"
+                                       placeholder="Name"
+                                       required="true"
+                                       th:field="*{name}"
+                                       type="text" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Address</label>
+                            <div class="col-sm-10">
+                                <input class="form-control"
+                                       placeholder="Address"
+                                       th:field="*{address}"
+                                       type="text" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Area</label>
+                            <div class="col-sm-10">
+                                <input class="form-control"
+                                       th:field="*{area}"
+                                       type="number" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Price($/h)</label>
+                            <div class="col-sm-10">
+                                <input class="form-control"
+                                       th:field="*{price}"
+                                       type="number" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Type</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" th:field="*{fieldType}" th:type="FieldType" th>
+                                    <option th:each="fieldType : ${fieldTypes}"
+                                            th:value="${fieldType.getId()}" th:text="${fieldType.getName()}"
+                                    >
+                                        Type
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        </div>
+                        <input class="btn btn-primary" type="submit" value="Submit" />
+                        <a th:href="@{/field-types}" class="btn btn-default">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</html>
