@@ -9,6 +9,7 @@ import app.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,6 +31,18 @@ public class ReviewServiceImpl extends BaseServiceImpl implements ReviewService 
         } catch (Exception e) {
             logger.error(e);
             return null;
+        }
+    }
+
+    @Override
+    public boolean createReview(ReviewInfo reviewInfo) throws InvocationTargetException, IllegalAccessException {
+        try {
+            getReviewDAO().saveOrUpdate(reviewInfo.toReview());
+            logger.info("Created new review");
+            return true;
+        } catch (Exception e) {
+            logger.error(e);
+            throw e;
         }
     }
 
