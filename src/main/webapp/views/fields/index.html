@@ -54,7 +54,7 @@
                                 <tbody>
                                 <th:block th:each="field,iter : ${data}">
                                     <tr th:style="${iter.odd}? 'background-color: #efeded;'">
-                                        <th scope="row" th:text="${field.id}"></th>
+                                        <th scope="row" th:text="${iter.count}"></th>
                                         <td th:text="${field.name}"></td>
                                         <td th:text="${field.address}"></td>
                                         <td th:text="${field.price}"></td>
@@ -79,6 +79,58 @@
                                 </th:block>
                                 </tbody>
                             </table>
+                            <div th:if="${data != null}" class="card-footer clearfix">
+                                <ul class="pagination pagination-sm m-0 float-right">
+                                    <li class="page-item"
+                                        th:attrappend="class=${data.isFirst()} ? disabled"
+                                    >
+                                        <a class="page-link" href="#"
+                                           th:if="${(param.search == null)}"
+                                           th:href="${data.hasPrevious()} ? @{/fields(page=${data.number})} : 'javascript: void(0);'"
+                                        >
+                                            &laquo;
+                                        </a>
+                                        <a class="page-link" href="#"
+                                           th:if="${(param.search != null)}"
+                                           th:href="${data.hasPrevious()} ? @{/fields(search=${param.search[0]}, page=${data.number})} : 'javascript: void(0);'"
+                                        >
+                                            &laquo;
+                                        </a>
+                                    </li>
+                                    <li th:each="i: ${#numbers.sequence(1, data.totalPages)}">
+                                        <a class="page-link" href="#"
+                                           th:if="${(param.search == null)}"
+                                           th:href="@{/fields(page=${i})}" th:text=${i}
+                                        >
+                                            1
+                                        </a>
+                                        <a class="page-link" href="#"
+                                           th:if="${(param.search != null)}"
+                                           th:href="@{/fields(search=${param.search[0]}, page=${i})}"
+                                           th:text=${i}
+                                        >
+                                            1
+                                        </a>
+                                    </li>
+                                    <li class="page-item"
+                                        th:attrappend="class=${data.isLast()} ? disabled"
+                                    >
+                                        <a class="page-link" href="#"
+                                           th:if="${(param.search == null)}"
+                                           th:href="${data.hasNext()} ? @{/fields(page=${data.number+2})} : 'javascript: void(0);'"
+                                        >
+                                            &raquo;
+                                        </a>
+                                        <a class="page-link" href="#"
+                                           th:if="${(param.search != null)}"
+                                           th:href="${data.hasNext()} ? @{/fields(search=${param.search[0]}, page=${data.number+2})} : 'javascript: void(0);'"
+                                        >
+                                            &raquo;
+                                        </a>
+
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
