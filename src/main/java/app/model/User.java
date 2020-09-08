@@ -169,9 +169,8 @@ public class User {
         this.google_id = google_id;
     }
 
-    public String getRole() {
-        String auth_role = "ROLE_" + role.toString();
-        return auth_role;
+    public Role getRole() {
+        return role;
     }
 
     public void setRole(Role role) {
@@ -255,7 +254,7 @@ public class User {
 
     public List<GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority(this.getRole()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.toString()));
         return authorities;
     }
 

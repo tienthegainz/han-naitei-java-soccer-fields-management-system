@@ -12,5 +12,7 @@ public interface UserDAO extends BaseDAO<Integer, User> {
 
     User findByEmail(String email);
 
+    boolean checkNewEmail(String email);
+
     Page<User> paginateUser(Pageable pageable);
 }
