@@ -3,7 +3,6 @@ package app.controller;
 import app.info.BookingRequestInfo;
 import app.info.FieldInfo;
 import app.model.BookingRequest;
-import app.model.Field;
 import app.model.User;
 import app.service.BookingRequestService;
 import app.service.FieldService;
@@ -11,7 +10,6 @@ import app.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -79,7 +77,7 @@ public class BookingRequestController extends BaseController {
         if (user == null) {
             return handleRedirect(redirectAttributes, "error", "User not logged in", "login");
         }
-        List<BookingRequest> existedBookingRequest = bookingRequestService.findByPeriod(bookingRequestInfo);
+        List<BookingRequestInfo> existedBookingRequest = bookingRequestService.findByPeriod(bookingRequestInfo);
 
         if (existedBookingRequest.size() != 0) {
             logger.info(existedBookingRequest.size());
