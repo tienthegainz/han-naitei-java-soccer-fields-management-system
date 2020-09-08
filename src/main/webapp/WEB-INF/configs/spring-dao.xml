@@ -13,6 +13,9 @@
     <bean id="fieldDAO" class="app.dao.impl.FieldDAOImpl">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
+    <bean id="reviewDAO" class="app.dao.impl.ReviewDAOImpl">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
     <bean id="bookingRequestDAO" class="app.dao.impl.BookingRequestDAOImpl">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>

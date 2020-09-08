@@ -28,7 +28,7 @@ public class FieldTypeController extends BaseController {
     public ModelAndView index() {
         logger.info("Index");
         ModelAndView model = new ModelAndView("views/field-types/index");
-        String title = "Field Type List";
+        String title = "Field Types";
 
         model.addObject("title", title);
         model.addObject("data", fieldTypeService.loadFieldTypes());
@@ -38,11 +38,12 @@ public class FieldTypeController extends BaseController {
     @GetMapping(path = "/field-types/{id}")
     public String show(@PathVariable("id") int id, Model model, final RedirectAttributes redirectAttributes) {
         logger.info("Show");
-        String title = "Field Type Details";
 
         FieldTypeInfo fieldTypeInfo = fieldTypeService.findFieldType(id);
         if (fieldTypeInfo == null)
             return handleRedirect(redirectAttributes, "error", "Field type not found.", "/field-types");
+
+        String title = fieldTypeInfo.getName();
 
         model.addAttribute("title", title);
         model.addAttribute("data", fieldTypeInfo);
@@ -66,12 +67,13 @@ public class FieldTypeController extends BaseController {
     @GetMapping(path = "/field-types/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model, final RedirectAttributes redirectAttributes) {
         logger.info("Edit");
-        String title = "Edit Field Type";
 
         FieldTypeInfo fieldTypeInfo = fieldTypeService.findFieldType(id);
 
         if (fieldTypeInfo == null)
             return handleRedirect(redirectAttributes, "error", "Field type not found.", "/field-types");
+
+        String title = fieldTypeInfo.getName() + " | Edit";
 
         model.addAttribute("title", title);
         model.addAttribute("fieldTypeForm", fieldTypeInfo);

@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<div th:fragment="other-users-reviews">
+    <th:block th:each="review, iter : ${otherUsersReviews}">
+        <div th:include="~{views/reviews/review-card :: review-card(${review})}"></div>
+    </th:block>
+</div>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/assets/css/utils/star.styles.css}" />
+</head>
+
+<div th:fragment="review-editor">
+    <form class="form-group"
+          id="reviewForm"
+          th:action="@{'/reviews'}"
+          th:method="POST"
+          th:object="${reviewForm}">
+        <input th:field="*{field.id}" type="hidden" />
+        <fieldset class="rating" th:field="*{rating}">
+            <input id="star5" name="rating" type="radio" value="5" />
+            <label for="star5" title="Rocks!">5 stars</label>
+            <input id="star4" name="rating" type="radio" value="4" />
+            <label for="star4" title="Pretty good">4 stars</label>
+            <input id="star3" name="rating" type="radio" value="3" />
+            <label for="star3" title="Meh">3 stars</label>
+            <input id="star2" name="rating" type="radio" value="2" />
+            <label for="star2" title="Kinda bad">2 stars</label>
+            <input id="star1" name="rating" type="radio" value="1" />
+            <label for="star1" title="Sucks big time">1 star</label>
+        </fieldset>
+        <textarea class="form-control" form="reviewForm" placeholder="Leave a review here..." rows="4"
+                  th:field="*{content}"></textarea>
+        <input class="btn btn-primary" type="submit" value="Submit" />
+    </form>
+</div>
+
+</html>

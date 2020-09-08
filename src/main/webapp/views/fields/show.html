@@ -14,6 +14,10 @@
             <div th:class="intro-section--background"
                  th:style="'background-image: url(' + @{${data.image}} + ');'">
             </div>
+            <div class="intro-section--content">
+                <span class="intro-section--title" th:text="${data.name}">Field Type Name</span>
+                <span class="intro-section--subtitle" th:text="${data.address}">Field Type Description</span>
+            </div>
         </div>
         <div class="container-fluid">
             <div class="card card-primary">
@@ -46,7 +50,7 @@
                                     <a th:href="@{'/field-types/' + ${data.fieldType.id}}"
                                        th:text="${data.fieldType.name}"
                                     >
-                                        San co
+                                        Field Type
                                     </a>
                                 </td>
                             </tr>
@@ -78,7 +82,8 @@
                                 </div>
                                 <div class="col-xs-8 col-md-9">
                                     <div class="progress progress-striped ">
-                                        <div class="progress-bar justify-content-start" role="progressbar" aria-valuenow="20"
+                                        <div aria-valuenow="20" class="progress-bar justify-content-start"
+                                             role="progressbar"
                                              aria-valuemin="0" aria-valuemax="100" style="width: 80%">
                                             <span class="sr-only">80%</span>
                                         </div>
@@ -90,7 +95,8 @@
                                 </div>
                                 <div class="col-xs-8 col-md-9">
                                     <div class="progress">
-                                        <div class="progress-bar justify-content-start" role="progressbar" aria-valuenow="20"
+                                        <div aria-valuenow="20" class="progress-bar justify-content-start"
+                                             role="progressbar"
                                              aria-valuemin="0" aria-valuemax="100" style="width: 60%">
                                             <span class="sr-only">60%</span>
                                         </div>
@@ -102,7 +108,8 @@
                                 </div>
                                 <div class="col-xs-8 col-md-9">
                                     <div class="progress">
-                                        <div class="progress-bar justify-content-start" role="progressbar" aria-valuenow="20"
+                                        <div aria-valuenow="20" class="progress-bar justify-content-start"
+                                             role="progressbar"
                                              aria-valuemin="0" aria-valuemax="100" style="width: 40%">
                                             <span class="sr-only">40%</span>
                                         </div>
@@ -114,7 +121,8 @@
                                 </div>
                                 <div class="col-xs-8 col-md-9">
                                     <div class="progress">
-                                        <div class="progress-bar justify-content-start" role="progressbar" aria-valuenow="20"
+                                        <div aria-valuenow="20" class="progress-bar justify-content-start"
+                                             role="progressbar"
                                              aria-valuemin="0" aria-valuemax="100" style="width: 20%">
                                             <span class="sr-only">20%</span>
                                         </div>
@@ -126,7 +134,8 @@
                                 </div>
                                 <div class="col-xs-8 col-md-9">
                                     <div class="progress">
-                                        <div class="progress-bar justify-content-start" role="progressbar" aria-valuenow="80"
+                                        <div aria-valuenow="80" class="progress-bar justify-content-start"
+                                             role="progressbar"
                                              aria-valuemin="0" aria-valuemax="100" style="width: 15%">
                                             <span class="sr-only">15%</span>
                                         </div>
@@ -141,50 +150,23 @@
             </div>
         </div>
         <hr>
-        <form class="form-group" id="reviewForm">
-            <fieldset class="rating">
-                <legend>Your review:</legend>
-                <input type="radio" id="star5" name="rating" value="5" /><label for="star5" title="Rocks!">5 stars</label>
-                <input type="radio" id="star4" name="rating" value="4" /><label for="star4" title="Pretty good">4 stars</label>
-                <input type="radio" id="star3" name="rating" value="3" /><label for="star3" title="Meh">3 stars</label>
-                <input type="radio" id="star2" name="rating" value="2" /><label for="star2" title="Kinda bad">2 stars</label>
-                <input type="radio" id="star1" name="rating" value="1" /><label for="star1" title="Sucks big time">1 star</label>
-            </fieldset>
-            <textarea class="form-control" form="reviewForm" rows="4" placeholder="Enter ..."></textarea>
-            <input class="btn btn-primary" type="submit" value="Submit" />
-        </form>
+        <legend>Your review</legend>
+        <div th:if="!${currentUser}">
+            <a th:href="@{'/login'}">Sign in</a> to share your thoughts about this field
+        </div>
+        <div th:if="${currentUser} AND !${currentUsersReview}"
+             th:include="~{views/reviews/editor :: review-editor}">
+            Review Editor
+        </div>
+        <div th:if="${currentUser} AND ${currentUsersReview}"
+             th:include="~{views/reviews/current-users-review :: current-users-review}">
+            Current User's Review
+        </div>
         <hr>
-        <div class="card">
-            <div class="card-body">
-                <div class="post">
-                    <div class="user-block">
-                        <img class="img-circle img-bordered-sm"
-                             src="https://i.pinimg.com/originals/58/25/7a/58257a940e8878c0c1097bc6e5c3af9f.jpg"
-                             alt="user image">
-                        <span class="username">
-                            <a href="#">Jonathan Burke Jr.</a>
-                            <p class="float-right">
-                                <i class="fas fa-star" style="color: #fcad03"></i>
-                                <i class="fas fa-star" style="color: #fcad03"></i>
-                                <i class="fas fa-star" style="color: #fcad03"></i>
-                            </p>
-                        </span>
-                        <a class="description" href="#">7:30 PM today</a>
-                    </div>
-                    <!-- /.user-block -->
-                    <p>
-                        Lorem ipsum represents a long-held tradition for designers,
-                        typographers and the like. Some people hate it and argue for
-                        its demise, but others ignore the hate as they create awesome
-                        tools to help create filler text for everyone from bacon lovers
-                        to Charlie Sheen fans.
-                    </p>
-                    <p>
-                        <a href="#" class="link-black text-sm"><i class="far fa-thumbs-up mr-1"></i> Like</a>
-                        <a href="#" class="link-black text-sm"><i class="far fa-comments"></i> Comment(5)</a>
-                    </p>
-                </div>
-            </div>
+        <legend>Others' reviews</legend>
+        <div th:if="${otherUsersReviews}"
+             th:include="~{views/reviews/other-users-reviews :: other-users-reviews}">
+            Other Users' Reviews
         </div>
     </section>
 </div>
