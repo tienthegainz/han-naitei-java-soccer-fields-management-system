@@ -11,21 +11,6 @@
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">Booking Request List</h1>
                 </div>
-                <!--                <div class="col-sm-6">-->
-                <!--                    <form class="form-inline ml-3 float-right " th:action="@{/fields}" method="get">-->
-                <!--                        <div class="input-group input-group-sm">-->
-                <!--                            <input class="form-control form-control-navbar"-->
-                <!--                                   type="search" placeholder="Search" aria-label="Search"-->
-                <!--                                   name="search" id="search"-->
-                <!--                            >-->
-                <!--                            <div class="input-group-append">-->
-                <!--                                <button class="btn btn-primary" type="submit">-->
-                <!--                                    <i class="fas fa-search"></i>-->
-                <!--                                </button>-->
-                <!--                            </div>-->
-                <!--                        </div>-->
-                <!--                    </form>-->
-                <!--                </div>-->
             </div>
         </div>
     </div>
@@ -33,49 +18,192 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <div class="card">
+                    <div class="card card-primary card-tabs">
+                        <div class="card-header p-0 pt-1">
+                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill"
+                                       href="#custom-tabs-one-home" role="tab"
+                                       aria-controls="custom-tabs-one-home" aria-selected="true">Pending</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill"
+                                       href="#custom-tabs-one-profile" role="tab"
+                                       aria-controls="custom-tabs-one-profile" aria-selected="false">Approved</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-one-messages-tab"
+                                       data-toggle="pill" href="#custom-tabs-one-messages" role="tab"
+                                       aria-controls="custom-tabs-one-messages"
+                                       aria-selected="false">Rejected</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="custom-tabs-one-settings-tab" data-toggle="pill"
+                                       href="#custom-tabs-one-settings" role="tab"
+                                       aria-controls="custom-tabs-one-settings"
+                                       aria-selected="false">Canceled</a>
+                                </li>
+                            </ul>
+                        </div>
                         <div class="card-body">
-                            <input
-                                    type="hidden"
-                                    th:name="${_csrf.parameterName}"
-                                    th:value="${_csrf.token}" />
-                            <table data-model="fields"
-                                   class="table table-bordered js--dataTable">
-                                <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">User</th>
-                                    <th scope="col">From Date</th>
-                                    <th scope="col">To Date</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Action</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <th:block th:each="bookingRequest,iter : ${data}">
-                                    <tr th:style="${iter.odd}? 'background-color: #efeded;'">
-                                        <th scope="row" th:text="${bookingRequest.id}"></th>
-                                        <td th:text="${bookingRequest.user.email}">Email</td>
-                                        <td th:text="${bookingRequest.fromDate}"></td>
-                                        <td th:text="${bookingRequest.toDate}"></td>
-                                        <td th:id="'status_' + ${bookingRequest.id}"
-                                            th:text="${bookingRequest.status}"></td>
-                                        <td>
-                                            <a class="btn btn-outline-secondary"
-                                               th:href="@{'/booking-requests/' + ${bookingRequest.id}}">Details</a>
-                                            <button class="btn btn-success btn-outline-dark approve_btn"
-                                                    sec:authorize="hasRole('ROLE_ADMIN')"
-                                                    th:attr="data-id=${bookingRequest.id}">Approve
-                                            </button>
-                                            <a class="btn btn-outline-dark" sec:authorize="hasRole('ROLE_ADMIN')"
-                                               th:href="@{'/booking-requests/' + ${bookingRequest.id} + '/edit'}">Edit</a>
-                                            <a class="btn btn-outline-danger" sec:authorize="hasRole('ROLE_ADMIN')"
-                                               th:href="@{'/booking-requests/' + ${bookingRequest.id} + '/delete'}">Delete</a>
-                                        </td>
-                                    </tr>
-                                </th:block>
-                                </tbody>
-                            </table>
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                                <div class="tab-pane fade active show" id="custom-tabs-one-home" role="tabpanel"
+                                     aria-labelledby="custom-tabs-one-home-tab">
+                                    <table data-model="bookingRequest"
+                                           class="table table-bordered js--dataTable">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">User</th>
+                                            <th scope="col">Field</th>
+                                            <th scope="col">From Date</th>
+                                            <th scope="col">To Date</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <th:block th:each="bookingRequest,iter : ${pendingList}">
+                                            <tr th:style="${iter.odd}? 'background-color: #efeded;'">
+                                                <th scope="row" th:text="${bookingRequest.id}"></th>
+                                                <td th:text="${bookingRequest.user.email}">Email</td>
+                                                <td th:text="${bookingRequest.field.name}">Field</td>
+                                                <td th:text="${#dates.format(bookingRequest.fromDate, 'HH:mm dd/MM/yyyy')}"></td>
+                                                <td th:text="${#dates.format(bookingRequest.toDate, 'HH:mm dd/MM/yyyy')}"></td>
+                                                <td th:id="'status_' + ${bookingRequest.id}"
+                                                    th:text="${bookingRequest.status}"></td>
+                                                <td>
+                                                    <button class="btn btn-success approve_btn"
+                                                            sec:authorize="hasRole('ROLE_ADMIN')"
+                                                            th:attr="data-id=${bookingRequest.id}">Approve
+                                                    </button>
+                                                    <a class="btn btn-outline-danger"
+                                                       sec:authorize="hasRole('ROLE_ADMIN')"
+                                                       th:href="@{'/booking-requests/' + ${bookingRequest.id} + '/delete'}">Reject</a>
+                                                    <a class="btn btn-outline-danger"
+                                                       sec:authorize="hasRole('ROLE_USER')"
+                                                       th:href="@{'/booking-requests/' + ${bookingRequest.id} + '/delete'}">Cancel</a>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel"
+                                     aria-labelledby="custom-tabs-one-profile-tab">
+                                    <table data-model="bookingRequest"
+                                           class="table table-bordered js--dataTable">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">User</th>
+                                            <th scope="col">Field</th>
+                                            <th scope="col">From Date</th>
+                                            <th scope="col">To Date</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <th:block th:each="bookingRequest,iter : ${approvedList}">
+                                            <tr th:style="${iter.odd}? 'background-color: #efeded;'">
+                                                <th scope="row" th:text="${bookingRequest.id}"></th>
+                                                <td th:text="${bookingRequest.user.email}">Email</td>
+                                                <td th:text="${bookingRequest.field.name}">Field</td>
+                                                <td th:text="${#dates.format(bookingRequest.fromDate, 'HH:mm dd/MM/yyyy')}"></td>
+                                                <td th:text="${#dates.format(bookingRequest.toDate, 'HH:mm dd/MM/yyyy')}"></td>
+                                                <td th:id="'status_' + ${bookingRequest.id}"
+                                                    th:text="${bookingRequest.status}"></td>
+                                                <td>
+                                                    <a class="btn btn-outline-danger"
+                                                       sec:authorize="hasRole('ROLE_ADMIN')"
+                                                       th:href="@{'/booking-requests/' + ${bookingRequest.id} + '/delete'}">Reject</a>
+                                                    <a class="btn btn-outline-danger"
+                                                       sec:authorize="hasRole('ROLE_USER')"
+                                                       th:href="@{'/booking-requests/' + ${bookingRequest.id} + '/delete'}">Cancel</a>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-one-messages" role="tabpanel"
+                                     aria-labelledby="custom-tabs-one-messages-tab">
+                                    <table data-model="bookingRequest"
+                                           class="table table-bordered js--dataTable">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">User</th>
+                                            <th scope="col">Field</th>
+                                            <th scope="col">From Date</th>
+                                            <th scope="col">To Date</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <th:block th:each="bookingRequest,iter : ${rejectedList}">
+                                            <tr th:style="${iter.odd}? 'background-color: #efeded;'">
+                                                <th scope="row" th:text="${bookingRequest.id}"></th>
+                                                <td th:text="${bookingRequest.user.email}">Email</td>
+                                                <td th:text="${bookingRequest.field.name}">Field</td>
+                                                <td th:text="${#dates.format(bookingRequest.fromDate, 'HH:mm dd/MM/yyyy')}"></td>
+                                                <td th:text="${#dates.format(bookingRequest.toDate, 'HH:mm dd/MM/yyyy')}"></td>
+                                                <td th:id="'status_' + ${bookingRequest.id}"
+                                                    th:text="${bookingRequest.status}"></td>
+                                                <td>
+                                                    <a class="btn btn-outline-danger"
+                                                       sec:authorize="hasRole('ROLE_ADMIN')"
+                                                       th:href="@{'/booking-requests/' + ${bookingRequest.id} + '/delete'}">Reject</a>
+                                                    <a class="btn btn-outline-danger"
+                                                       sec:authorize="hasRole('ROLE_USER')"
+                                                       th:href="@{'/booking-requests/' + ${bookingRequest.id} + '/delete'}">Cancel</a>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="tab-pane fade" id="custom-tabs-one-settings" role="tabpanel"
+                                     aria-labelledby="custom-tabs-one-settings-tab">
+                                    <table data-model="bookingRequest"
+                                           class="table table-bordered js--dataTable">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">User</th>
+                                            <th scope="col">Field</th>
+                                            <th scope="col">From Date</th>
+                                            <th scope="col">To Date</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <th:block th:each="bookingRequest,iter : ${canceledList}">
+                                            <tr th:style="${iter.odd}? 'background-color: #efeded;'">
+                                                <th scope="row" th:text="${bookingRequest.id}"></th>
+                                                <td th:text="${bookingRequest.user.email}">Email</td>
+                                                <td th:text="${bookingRequest.field.name}">Field</td>
+                                                <td th:text="${#dates.format(bookingRequest.fromDate, 'HH:mm dd/MM/yyyy')}"></td>
+                                                <td th:text="${#dates.format(bookingRequest.toDate, 'HH:mm dd/MM/yyyy')}"></td>
+                                                <td th:id="'status_' + ${bookingRequest.id}"
+                                                    th:text="${bookingRequest.status}"></td>
+                                                <td>
+                                                    <a class="btn btn-outline-danger"
+                                                       sec:authorize="hasRole('ROLE_ADMIN')"
+                                                       th:href="@{'/booking-requests/' + ${bookingRequest.id} + '/delete'}">Reject</a>
+                                                    <a class="btn btn-outline-danger"
+                                                       sec:authorize="hasRole('ROLE_USER')"
+                                                       th:href="@{'/booking-requests/' + ${bookingRequest.id} + '/delete'}">Cancel</a>
+                                                </td>
+                                            </tr>
+                                        </th:block>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

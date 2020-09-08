@@ -37,22 +37,6 @@ public class BookingRequestServiceImpl extends BaseServiceImpl implements Bookin
     }
 
     @Override
-    public boolean updateBookingRequest(BookingRequestInfo bookingRequestInfo) throws InvocationTargetException, IllegalAccessException {
-        String[] ignoreProperties = {"id"};
-
-        try {
-            BookingRequest bookingRequest = getBookingRequestDAO().findById(bookingRequestInfo.getId(), true);
-            BeanUtils.copyProperties(bookingRequestInfo.toBookingRequest(), bookingRequest, ignoreProperties);
-            getBookingRequestDAO().saveOrUpdate(bookingRequest);
-            logger.info(String.format("Updated Field Type having id: %d", bookingRequestInfo.getId()));
-            return true;
-        } catch (Exception e) {
-            logger.error(e);
-            throw e;
-        }
-    }
-
-    @Override
     public boolean deleteBookingRequest(int id) {
         try {
             BookingRequest bookingRequest = getBookingRequestDAO().findById(id, true);
@@ -78,6 +62,28 @@ public class BookingRequestServiceImpl extends BaseServiceImpl implements Bookin
     }
 
     @Override
+    public List<BookingRequestInfo> loadBookingRequestsByStatus(BookingRequest.Status status) {
+        try {
+            logger.info("Get Booking Requests list");
+            return getBookingRequestDAO().loadBookingRequestsByStatus(status).stream().map(BookingRequestInfo::new).collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error(e);
+            return null;
+        }
+    }
+
+    @Override
+    public List<BookingRequestInfo> loadBookingRequestsOfUserByStatus(BookingRequest.Status status, int user_id) {
+        try {
+            logger.info("Get Booking Requests list");
+            return getBookingRequestDAO().loadBookingRequestsOfUserByStatus(status, user_id).stream().map(BookingRequestInfo::new).collect(Collectors.toList());
+        } catch (Exception e) {
+            logger.error(e);
+            return null;
+        }
+    }
+
+    @Override
     public List<BookingRequestInfo> findByPeriod(BookingRequestInfo bookingRequestInfo) {
         try {
             logger.info("Get Booking Request In Period");
@@ -89,12 +95,13 @@ public class BookingRequestServiceImpl extends BaseServiceImpl implements Bookin
     }
 
     @Override
-    public boolean approveBookingRequest(int id) {
+    @Transactional
+    public boolean updateBookingRequestStatus(int id, BookingRequest.Status status) {
         try {
             logger.info("Approve");
             BookingRequest bookingRequest = getBookingRequestDAO().findById(id, true);
             logger.info("BOOKING REQUEST TO BE APPROVED:" + bookingRequest.toString());
-            bookingRequest.setStatus(BookingRequest.Status.APPROVED);
+            bookingRequest.setStatus(status);
             logger.info("Set approved");
             getBookingRequestDAO().saveOrUpdate(bookingRequest);
             return true;

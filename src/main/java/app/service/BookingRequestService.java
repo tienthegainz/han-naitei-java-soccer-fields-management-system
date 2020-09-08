@@ -12,13 +12,15 @@ public interface BookingRequestService {
 
     boolean createBookingRequest(BookingRequestInfo bookingRequestInfo) throws InvocationTargetException, IllegalAccessException;
 
-    boolean updateBookingRequest(BookingRequestInfo bookingRequestInfo) throws InvocationTargetException, IllegalAccessException;
-
     boolean deleteBookingRequest(int id);
 
     List<BookingRequestInfo> findByPeriod(BookingRequestInfo bookingRequestInfo);
 
     List<BookingRequestInfo> loadBookingRequests();
 
-    boolean approveBookingRequest(int id);
+    List<BookingRequestInfo> loadBookingRequestsByStatus(BookingRequest.Status status);
+
+    List<BookingRequestInfo> loadBookingRequestsOfUserByStatus(BookingRequest.Status status, int user_id);
+
+    boolean updateBookingRequestStatus(int id, BookingRequest.Status status);
 }
