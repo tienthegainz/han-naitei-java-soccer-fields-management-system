@@ -5,13 +5,15 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" th:href="@{/assets/css/field-types/show.styles.css}" />
+    <title th:text="${title}">Field Type Details</title>
 </head>
 
 <div layout:fragment="body">
     <section class="content">
         <div class="intro-section">
             <div th:class="intro-section--background"
-                 th:style="'background-image: url(' + @{${data.photoURL}} + ');'"></div>
+                 th:style="'background-image: url(' + @{${data.photoURL}} + ');'">
+            </div>
             <div class="intro-section--content">
                 <span class="intro-section--title" th:text="${data.name}">Field Type Name</span>
                 <span class="intro-section--subtitle" th:text="${data.description}">Field Type Description</span>
@@ -20,7 +22,7 @@
         <div class="container-fluid">
             <div class="card card-primary">
                 <div class="card-header">
-                    <h3 class="card-title" th:text="${title}">Field Type Details</h3>
+                    <h3 class="card-title">Details</h3>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -33,7 +35,6 @@
                             <tr>
                                 <td>Description</td>
                                 <td th:text="${data.description}" />
-                                </td>
                             </tr>
                             </tbody>
                         </table>
@@ -44,11 +45,3 @@
     </section>
 </div>
 </html>
-
-<script>
-    const status = "[[${status}]]";
-    const message = "[[${message}]]";
-
-    if (status && message)
-        showToast(status, message);
-</script>

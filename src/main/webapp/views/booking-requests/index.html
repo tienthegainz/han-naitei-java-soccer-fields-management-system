@@ -58,7 +58,8 @@
                                         <td th:text="${bookingRequest.user.email}">Email</td>
                                         <td th:text="${bookingRequest.fromDate}"></td>
                                         <td th:text="${bookingRequest.toDate}"></td>
-                                        <td th:id="'status_' + ${bookingRequest.id}" th:text="${bookingRequest.status}"></td>
+                                        <td th:id="'status_' + ${bookingRequest.id}"
+                                            th:text="${bookingRequest.status}"></td>
                                         <td>
                                             <a class="btn btn-outline-secondary"
                                                th:href="@{'/booking-requests/' + ${bookingRequest.id}}">Details</a>
@@ -83,38 +84,3 @@
     </section>
 </div>
 </html>
-
-<script>
-    const status = "[[${status}]]";
-    const message = "[[${message}]]";
-
-    if (status && message)
-        showToast(status, message);
-
-    $(document).ready(() => {
-        $('.approve_btn').click(function (event) {
-            const id = $(this).data('id');
-            const token = "[[${_csrf.token}]]";
-            $.ajax({
-                type: 'POST',
-                url: `/booking-requests/${id}/approve`,
-                beforeSend: function (xhr) {
-                    xhr.setRequestHeader('X-CSRF-TOKEN', token);
-                },
-                headers: {
-                    'Accept': "application/json",
-                    'Content-Type': "application/json"
-                },
-                dataType: 'text',
-                data: JSON.stringify({}),
-                processData: false,
-                contentType: "application/json; charset=UTF-8",
-                success: function (status) {
-                    if (status === 'success') {
-                        $(`#status_${id}`).html('APPROVED');
-                    }
-                },
-            })
-        })
-    })
-</script>

@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      xmlns:sec="http://www.w3.org/1999/xhtml"
       layout:decorate="~{views/layout/base-layout}">
 
 <div layout:fragment="body">
@@ -91,11 +90,3 @@
     </section>
 </div>
 </html>
-
-<script>
-    const status = "[[${status}]]";
-    const message = "[[${message}]]";
-
-    if (status && message)
-        showToast(status, message);
-</script>

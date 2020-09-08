@@ -15,7 +15,7 @@
                         Create New
                     </a>
                 </div>
-                <div class="col-sm-6" >
+                <div class="col-sm-6">
                     <form class="form-inline ml-3 float-right " th:action="@{/fields}" method="get">
                         <div class="input-group input-group-sm">
                             <input class="form-control form-control-navbar"
@@ -139,11 +139,3 @@
     </section>
 </div>
 </html>
-
-<script>
-    const status = "[[${status}]]";
-    const message = "[[${message}]]";
-
-    if (status && message)
-        showToast(status, message);
-</script>

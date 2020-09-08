@@ -5,7 +5,7 @@ const TOAST_TYPE = {
     default: 'dark'
 };
 
-const showToast = (status, message) => {
+const showToast = (status = 'default', message) => {
     $(document).Toasts('create', {
         class: `bg-${TOAST_TYPE[status]} custom-toast`,
         title: status[0].toUpperCase() + status.substring(1),   //  Capitalize first character
