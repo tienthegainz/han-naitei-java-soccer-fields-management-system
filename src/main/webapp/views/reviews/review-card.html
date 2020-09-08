@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<div th:fragment="review-card(review)">
+    <div class="card" th:object="${review}">
+        <div class="card-body">
+            <div class="post">
+                <div class="user-block">
+                    <img alt="avatar"
+                         class="img-circle img-bordered-sm"
+                         th:src="@{*{user.avatar}}">
+                    <a class="username" href="#" th:text="*{user.name}">Author</a>
+                    <span class="description" th:text="*{createdAt.toString().substring(0,16)}">Posted time</span>
+                </div>
+                <div class="float-right">
+                    <i class="fas fa-star"
+                       style="color: #fcad03"
+                       th:each="iter : ${#numbers.sequence(1, review.rating)}"></i>
+                    <i class="fas fa-star"
+                       style="color: #d4d4d4"
+                       th:each="iter : ${#numbers.sequence(1, 5 - review.rating)}"
+                       th:if="*{rating} < 5"></i>
+                </div>
+                <p th:text="*{content}">
+                    Review content.
+                </p>
+                <div>
+                    <a class="link-black text-sm" href="#"><i class="far fa-thumbs-up mr-1"></i>Like</a>
+                    <a class="link-black text-sm" href="#"><i class="far fa-comments mr-1"></i>Comment(5)</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</html>

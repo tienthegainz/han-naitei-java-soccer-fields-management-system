@@ -1,9 +1,11 @@
 package app.controller;
 
 import app.info.FieldInfo;
-
+import app.info.ReviewInfo;
 import app.service.FieldService;
 import app.service.FieldTypeService;
+import app.service.ReviewService;
+import app.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,12 +25,19 @@ public class FieldController extends BaseController {
     private static final Logger logger = Logger.getLogger(FieldController.class);
 
     private final FieldService fieldService;
+
     private final FieldTypeService fieldTypeService;
 
+    private final ReviewService reviewService;
+
+    private final UserService userService;
+
     @Autowired
-    public FieldController(FieldService fieldService, FieldTypeService fieldTypeService) {
+    public FieldController(FieldService fieldService, FieldTypeService fieldTypeService, ReviewService reviewService, UserService userService) {
         this.fieldService = fieldService;
         this.fieldTypeService = fieldTypeService;
+        this.reviewService = reviewService;
+        this.userService = userService;
     }
 
     @GetMapping(path = {"/fields", "/"})
@@ -42,13 +51,14 @@ public class FieldController extends BaseController {
         fieldInfo.setPage(page.orElse(1));
 
         model.addObject("title", title);
-        if (search == null){
-            Page<FieldInfo> data = fieldService.paginate(fieldInfo);
+
+        Page<FieldInfo> data;
+        if (search == null) {
+            data = fieldService.paginate(fieldInfo);
             model.addObject("data", data);
 //            model.addObject("data", fieldService.loadFields());
-        }
-        else{
-            Page<FieldInfo> data = fieldService.searchFields(search, fieldInfo);
+        } else {
+            data = fieldService.searchFields(search, fieldInfo);
             model.addObject("data", data);
         }
 
@@ -64,8 +74,15 @@ public class FieldController extends BaseController {
         if (fieldInfo == null)
             return handleRedirect(redirectAttributes, "error", "Field type not found.", "/fields");
 
+        ReviewInfo reviewInfo = new ReviewInfo();
+        reviewInfo.setField(fieldInfo.toField());
+
         model.addAttribute("title", title);
         model.addAttribute("data", fieldInfo);
+        model.addAttribute("currentUser", userService.getCurrentUser());
+        model.addAttribute("currentUsersReview", reviewService.loadCurrentUsersReview(fieldInfo));
+        model.addAttribute("otherUsersReviews", reviewService.loadOtherUsersReviews(fieldInfo));
+        model.addAttribute("reviewForm", reviewInfo);
 
         return "views/fields/show";
     }

@@ -1,18 +1,23 @@
 package app.info;
 
+import app.model.BookingRequest;
 import app.model.Field;
 import app.model.FieldType;
+import app.model.Review;
 import org.springframework.beans.BeanUtils;
 
-public class FieldInfo extends BaseInfo{
+import java.util.Date;
+import java.util.List;
+
+public class FieldInfo extends BaseInfo {
 
     private Integer id;
 
     private String name;
 
-    private String image;
-
     private String address;
+
+    private String image;
 
     private Integer area;
 
@@ -20,27 +25,29 @@ public class FieldInfo extends BaseInfo{
 
     private FieldType fieldType;
 
-    public FieldInfo() {
-    }
+    private List<BookingRequest> bookingRequests;
 
-    public FieldInfo(Integer id, String name, String image, String address, Integer area, Integer price, FieldType fieldType) {
-        this.id = id;
-        this.name = name;
-        this.image = image;
-        this.address = address;
-        this.area = area;
-        this.price = price;
-        this.fieldType = fieldType;
+    private List<Review> reviews;
+
+    private Date createdAt;
+
+    private Date updatedAt;
+
+    public FieldInfo() {
     }
 
     public FieldInfo(Field field) {
         this.id = field.getId();
         this.name = field.getName();
-        this.image = field.getImage();
         this.address = field.getAddress();
+        this.image = field.getImage();
         this.area = field.getArea();
         this.price = field.getPrice();
         this.fieldType = field.getFieldType();
+        this.bookingRequests = field.getBookingRequests();
+        this.reviews = field.getReviews();
+        this.createdAt = field.getCreatedAt();
+        this.updatedAt = field.getUpdatedAt();
     }
 
     public Integer getId() {
@@ -99,10 +106,43 @@ public class FieldInfo extends BaseInfo{
         this.fieldType = fieldType;
     }
 
+    public List<BookingRequest> getBookingRequests() {
+        return bookingRequests;
+    }
+
+    public void setBookingRequests(List<BookingRequest> bookingRequests) {
+        this.bookingRequests = bookingRequests;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
     public Field toField() {
         Field field = new Field();
 
         BeanUtils.copyProperties(this, field);
+
         return field;
     }
 }

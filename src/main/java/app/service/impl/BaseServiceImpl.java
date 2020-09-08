@@ -1,9 +1,6 @@
 package app.service.impl;
 
-import app.dao.BookingRequestDAO;
-import app.dao.FieldDAO;
-import app.dao.FieldTypeDAO;
-import app.dao.UserDAO;
+import app.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class BaseServiceImpl {
@@ -15,6 +12,9 @@ public class BaseServiceImpl {
 
     @Autowired
     private FieldDAO fieldDAO;
+
+    @Autowired
+    private ReviewDAO reviewDAO;
 
     @Autowired
     private BookingRequestDAO bookingRequestDAO;
@@ -41,6 +41,14 @@ public class BaseServiceImpl {
 
     public void setFieldDAO(FieldDAO fieldDAO) {
         this.fieldDAO = fieldDAO;
+    }
+
+    public ReviewDAO getReviewDAO() {
+        return reviewDAO;
+    }
+
+    public void setReviewDAO(ReviewDAO reviewDAO) {
+        this.reviewDAO = reviewDAO;
     }
 
     public BookingRequestDAO getBookingRequestDAO() {
