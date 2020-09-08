@@ -22,7 +22,6 @@ import java.util.Optional;
 
 @Controller
 public class FieldController extends BaseController {
-    private static final Logger logger = Logger.getLogger(FieldController.class);
 
     private final FieldService fieldService;
 
@@ -89,7 +88,6 @@ public class FieldController extends BaseController {
 
     @GetMapping(path = "/fields/create")
     public String create(Model model) {
-        logger.info("Create");
         String title = "Create New Field Type";
 
         FieldInfo fieldInfo = new FieldInfo();
@@ -104,7 +102,6 @@ public class FieldController extends BaseController {
 
     @PostMapping(path = "/fields")
     public String post(FieldInfo fieldInfo, final RedirectAttributes redirectAttributes) {
-        logger.info("POST");
 
         fieldInfo.setId(null);
 

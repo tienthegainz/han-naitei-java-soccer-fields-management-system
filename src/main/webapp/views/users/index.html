@@ -24,6 +24,7 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
+                                    <th scope="col">Id</th>
                                     <th scope="col">Email</th>
                                     <th scope="col">Username</th>
                                     <th scope="col">Name</th>
@@ -36,16 +37,17 @@
                                 <th:block th:each="user,iter : ${data}">
                                     <tr th:style="${iter.odd}? 'background-color: #efeded;'">
                                         <th scope="row" th:text="${data.number*user.perPage+iter.count}"></th>
+                                        <td th:text="${user.id}"></td>
                                         <td th:text="${user.name}"></td>
                                         <td th:text="${user.username}"></td>
                                         <td th:text="${user.name}"></td>
                                         <td th:text="${user.birthday}"></td>
                                         <td th:text="${user.createdAt}"></td>
                                         <td>
-                                            <a class="btn btn-outline-secondary"
+                                            <a class="btn btn-outline-dark"
                                                th:href="@{'/users/' + ${user.id}}">Details</a>
                                             <a class="btn btn-outline-primary"
-                                               th:href="@{'/users/' + ${user.id} + '/edit'}">Edit</a>
+                                               th:href="@{'/users/' + ${user.id} + '/edit'}">Block</a>
                                             <a class="btn btn-outline-danger"
                                                th:href="@{'/users/' + ${user.id} + '/delete'}">Delete</a>
                                         </td>
