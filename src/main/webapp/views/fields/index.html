@@ -54,7 +54,7 @@
                                 <tbody>
                                 <th:block th:each="field,iter : ${data}">
                                     <tr th:style="${iter.odd}? 'background-color: #efeded;'">
-                                        <th scope="row" th:text="${iter.count}"></th>
+                                        <th scope="row" th:text="${data.number*field.perPage+iter.count}"></th>
                                         <td th:text="${field.name}"></td>
                                         <td th:text="${field.address}"></td>
                                         <td th:text="${field.price}"></td>
