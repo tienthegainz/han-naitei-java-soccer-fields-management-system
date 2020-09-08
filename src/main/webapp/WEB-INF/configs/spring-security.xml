@@ -6,7 +6,7 @@
     http://www.springframework.org/schema/security
     http://www.springframework.org/schema/security/spring-security.xsd">
 	<http auto-config="true" use-expressions="true">
-        <intercept-url pattern="/users" access="hasRole('ROLE_ADMIN')" />
+        <intercept-url pattern="/users" method="GET" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/field-types/create" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/field-types/*/edit" access="hasRole('ROLE_ADMIN')" />
 		<intercept-url pattern="/field-types/*/delete" access="hasRole('ROLE_ADMIN')" />
