@@ -5,6 +5,7 @@ import app.model.BookingRequest;
 import app.service.BookingRequestService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -40,9 +41,9 @@ public class BookingRequestServiceImpl extends BaseServiceImpl implements Bookin
         String[] ignoreProperties = {"id"};
 
         try {
-            BookingRequest fieldType = getBookingRequestDAO().findById(bookingRequestInfo.getId(), true);
-            BeanUtils.copyProperties(bookingRequestInfo.toBookingRequest(), fieldType, ignoreProperties);
-            getBookingRequestDAO().saveOrUpdate(fieldType);
+            BookingRequest bookingRequest = getBookingRequestDAO().findById(bookingRequestInfo.getId(), true);
+            BeanUtils.copyProperties(bookingRequestInfo.toBookingRequest(), bookingRequest, ignoreProperties);
+            getBookingRequestDAO().saveOrUpdate(bookingRequest);
             logger.info(String.format("Updated Field Type having id: %d", bookingRequestInfo.getId()));
             return true;
         } catch (Exception e) {
@@ -84,6 +85,22 @@ public class BookingRequestServiceImpl extends BaseServiceImpl implements Bookin
         } catch (Exception e) {
             logger.error(e);
             return null;
+        }
+    }
+
+    @Override
+    public boolean approveBookingRequest(int id) {
+        try {
+            logger.info("Approve");
+            BookingRequest bookingRequest = getBookingRequestDAO().findById(id, true);
+            logger.info("BOOKING REQUEST TO BE APPROVED:" + bookingRequest.toString());
+            bookingRequest.setStatus(BookingRequest.Status.APPROVED);
+            logger.info("Set approved");
+            getBookingRequestDAO().saveOrUpdate(bookingRequest);
+            return true;
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return false;
         }
     }
 }

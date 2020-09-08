@@ -10,22 +10,22 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <h1 class="m-0 text-dark">Booking Request List</h1>
-                 </div>
-<!--                <div class="col-sm-6">-->
-<!--                    <form class="form-inline ml-3 float-right " th:action="@{/fields}" method="get">-->
-<!--                        <div class="input-group input-group-sm">-->
-<!--                            <input class="form-control form-control-navbar"-->
-<!--                                   type="search" placeholder="Search" aria-label="Search"-->
-<!--                                   name="search" id="search"-->
-<!--                            >-->
-<!--                            <div class="input-group-append">-->
-<!--                                <button class="btn btn-primary" type="submit">-->
-<!--                                    <i class="fas fa-search"></i>-->
-<!--                                </button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </form>-->
-<!--                </div>-->
+                </div>
+                <!--                <div class="col-sm-6">-->
+                <!--                    <form class="form-inline ml-3 float-right " th:action="@{/fields}" method="get">-->
+                <!--                        <div class="input-group input-group-sm">-->
+                <!--                            <input class="form-control form-control-navbar"-->
+                <!--                                   type="search" placeholder="Search" aria-label="Search"-->
+                <!--                                   name="search" id="search"-->
+                <!--                            >-->
+                <!--                            <div class="input-group-append">-->
+                <!--                                <button class="btn btn-primary" type="submit">-->
+                <!--                                    <i class="fas fa-search"></i>-->
+                <!--                                </button>-->
+                <!--                            </div>-->
+                <!--                        </div>-->
+                <!--                    </form>-->
+                <!--                </div>-->
             </div>
         </div>
     </div>
@@ -35,6 +35,10 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-body">
+                            <input
+                                    type="hidden"
+                                    th:name="${_csrf.parameterName}"
+                                    th:value="${_csrf.token}" />
                             <table data-model="fields"
                                    class="table table-bordered js--dataTable">
                                 <thead>
@@ -43,6 +47,7 @@
                                     <th scope="col">User</th>
                                     <th scope="col">From Date</th>
                                     <th scope="col">To Date</th>
+                                    <th scope="col">Status</th>
                                     <th scope="col">Action</th>
                                 </tr>
                                 </thead>
@@ -53,9 +58,14 @@
                                         <td th:text="${bookingRequest.user.email}">Email</td>
                                         <td th:text="${bookingRequest.fromDate}"></td>
                                         <td th:text="${bookingRequest.toDate}"></td>
+                                        <td th:id="'status_' + ${bookingRequest.id}" th:text="${bookingRequest.status}"></td>
                                         <td>
                                             <a class="btn btn-outline-secondary"
                                                th:href="@{'/booking-requests/' + ${bookingRequest.id}}">Details</a>
+                                            <button class="btn btn-success btn-outline-dark approve_btn"
+                                                    sec:authorize="hasRole('ROLE_ADMIN')"
+                                                    th:attr="data-id=${bookingRequest.id}">Approve
+                                            </button>
                                             <a class="btn btn-outline-dark" sec:authorize="hasRole('ROLE_ADMIN')"
                                                th:href="@{'/booking-requests/' + ${bookingRequest.id} + '/edit'}">Edit</a>
                                             <a class="btn btn-outline-danger" sec:authorize="hasRole('ROLE_ADMIN')"
@@ -80,4 +90,31 @@
 
     if (status && message)
         showToast(status, message);
+
+    $(document).ready(() => {
+        $('.approve_btn').click(function (event) {
+            const id = $(this).data('id');
+            const token = "[[${_csrf.token}]]";
+            $.ajax({
+                type: 'POST',
+                url: `/booking-requests/${id}/approve`,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader('X-CSRF-TOKEN', token);
+                },
+                headers: {
+                    'Accept': "application/json",
+                    'Content-Type': "application/json"
+                },
+                dataType: 'text',
+                data: JSON.stringify({}),
+                processData: false,
+                contentType: "application/json; charset=UTF-8",
+                success: function (status) {
+                    if (status === 'success') {
+                        $(`#status_${id}`).html('APPROVED');
+                    }
+                },
+            })
+        })
+    })
 </script>

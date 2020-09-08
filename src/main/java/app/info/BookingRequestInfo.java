@@ -13,6 +13,7 @@ public class BookingRequestInfo {
     private Integer id;
     private Date toDate;
     private Date fromDate;
+    private BookingRequest.Status status;
     private Field field;
     private User user;
 
@@ -31,6 +32,7 @@ public class BookingRequestInfo {
         this.id = bookingRequest.getId();
         this.toDate = bookingRequest.getToDate();
         this.fromDate = bookingRequest.getFromDate();
+        this.status = bookingRequest.getStatus();
         this.field = bookingRequest.getField();
         this.user = bookingRequest.getUser();
     }
@@ -73,6 +75,14 @@ public class BookingRequestInfo {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public BookingRequest.Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookingRequest.Status status) {
+        this.status = status;
     }
 
     public BookingRequest toBookingRequest() throws InvocationTargetException, IllegalAccessException {
