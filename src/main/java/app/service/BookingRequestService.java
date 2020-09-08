@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface BookingRequestService {
 
-    BookingRequest findBookingRequest(int id);
+    BookingRequestInfo findBookingRequest(int id);
 
     boolean createBookingRequest(BookingRequestInfo bookingRequestInfo) throws InvocationTargetException, IllegalAccessException;
 
@@ -19,7 +19,7 @@ public interface BookingRequestService {
 
     boolean deleteBookingRequest(int id);
 
-    List<BookingRequest> findByPeriod(BookingRequestInfo bookingRequestInfo);
+    List<BookingRequestInfo> findByPeriod(BookingRequestInfo bookingRequestInfo);
 
-    List<BookingRequest> loadBookingRequests();
+    List<BookingRequestInfo> loadBookingRequests();
 }

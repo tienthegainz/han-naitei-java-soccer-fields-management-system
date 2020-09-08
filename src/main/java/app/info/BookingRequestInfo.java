@@ -27,6 +27,14 @@ public class BookingRequestInfo {
         this.user = user;
     }
 
+    public BookingRequestInfo(BookingRequest bookingRequest) {
+        this.id = bookingRequest.getId();
+        this.toDate = bookingRequest.getToDate();
+        this.fromDate = bookingRequest.getFromDate();
+        this.field = bookingRequest.getField();
+        this.user = bookingRequest.getUser();
+    }
+
     public Field getField() {
         return field;
     }
