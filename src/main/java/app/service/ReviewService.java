@@ -4,9 +4,15 @@ import app.info.FieldInfo;
 import app.info.ReviewInfo;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface ReviewService {
+
+    String averageRatingByFieldId(int id);
+
+    Long sumReviewByFieldId(int id);
 
     ReviewInfo findReview(int id);
 
@@ -19,4 +25,6 @@ public interface ReviewService {
     ReviewInfo loadCurrentUsersReview(FieldInfo fieldInfo);
 
     List<ReviewInfo> loadOtherUsersReviews(FieldInfo fieldInfo);
+
+    HashMap<Integer, Long> countReviewGroupByRating(int id);
 }

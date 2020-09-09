@@ -39,4 +39,26 @@ public class ReviewDAOImpl extends GenericDAO<Integer, Review> implements Review
                 .filter(review -> !userIds.contains(review.getUser().getId()))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public Double averageRatingByFieldId(int id) {
+        return (Double) getSession().createQuery("SELECT avg(rating) from Review where field.id = :id")
+                .setParameter("id", id)
+                .getSingleResult();
+    }
+
+    @Override
+    public Long sumReviewByFieldId(int id) {
+        return (Long) getSession().createQuery("SELECT count(*) from Review where field.id = :id")
+                .setParameter("id", id)
+                .getSingleResult();
+    }
+
+    @Override
+    public List<Object[]> countReviewGroupByRating(int id) {
+        return (List<Object[]>) getSession()
+                .createQuery("SELECT rating, count(*) from Review where field.id = :id group by rating order by rating desc")
+                .setParameter("id", id)
+                .getResultList();
+    }
 }

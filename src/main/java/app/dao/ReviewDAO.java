@@ -12,4 +12,10 @@ public interface ReviewDAO extends BaseDAO<Integer, Review> {
     List<Review> loadReviews(Field field, List<Integer> userIds);
 
     List<Review> loadReviewsExcept(Field field, List<Integer> userIds);
+
+    Double averageRatingByFieldId(int id);
+
+    Long sumReviewByFieldId(int id);
+
+    List<Object[]> countReviewGroupByRating(int id);
 }

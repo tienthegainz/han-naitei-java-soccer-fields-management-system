@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ReviewServiceImpl extends BaseServiceImpl implements ReviewService {
@@ -22,6 +24,17 @@ public class ReviewServiceImpl extends BaseServiceImpl implements ReviewService 
     @Autowired
     public void setUserService(UserService userService) {
         ReviewServiceImpl.userService = userService;
+    }
+
+    @Override
+    public String averageRatingByFieldId(int id) {
+        Double avgRating = getReviewDAO().averageRatingByFieldId(id);
+        return String.format("%.1f", avgRating);
+    }
+
+    @Override
+    public Long sumReviewByFieldId(int id) {
+        return getReviewDAO().sumReviewByFieldId(id);
     }
 
     @Override
@@ -110,5 +123,21 @@ public class ReviewServiceImpl extends BaseServiceImpl implements ReviewService 
             logger.error(e);
             return null;
         }
+    }
+
+    @Override
+    public HashMap<Integer, Long> countReviewGroupByRating(int id) {
+        List<Object[]> queryResult = getReviewDAO().countReviewGroupByRating(id);
+        HashMap<Integer, Long> result = new HashMap<>();
+        long sum = 0;
+        for (Object[] element : queryResult) {
+            Integer rating = (Integer) element[0];
+            Long count = (Long) element[1];
+            result.put(rating, count);
+            sum += count;
+        }
+        long finalSum = sum;
+        result.replaceAll((k, v) -> (Long)(v*100/ finalSum));
+        return result;
     }
 }
