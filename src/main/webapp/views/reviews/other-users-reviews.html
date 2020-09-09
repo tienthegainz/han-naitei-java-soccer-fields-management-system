@@ -6,7 +6,7 @@
 
 <div th:fragment="other-users-reviews">
     <th:block th:each="review, iter : ${otherUsersReviews}">
-        <div th:include="~{views/reviews/review-card :: review-card(${review})}"></div>
+        <div th:include="~{views/reviews/review-card :: review-card(${review}, false)}"></div>
     </th:block>
 </div>
 </html>

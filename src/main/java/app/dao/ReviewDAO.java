@@ -18,4 +18,5 @@ public interface ReviewDAO extends BaseDAO<Integer, Review> {
     Long sumReviewByFieldId(int id);
 
     List<Object[]> countReviewGroupByRating(int id);
+
 }

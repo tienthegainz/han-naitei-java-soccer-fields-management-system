@@ -13,7 +13,7 @@
           th:object="${reviewForm}">
         <input th:field="*{field.id}" type="hidden" />
         <fieldset class="rating" th:field="*{rating}">
-            <input id="star5" name="rating" type="radio" value="5" />
+            <input id="star5" name="rating" type="radio" value="5" required/>
             <label for="star5" title="Rocks!">5 stars</label>
             <input id="star4" name="rating" type="radio" value="4" />
             <label for="star4" title="Pretty good">4 stars</label>

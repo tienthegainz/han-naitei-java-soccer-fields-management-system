@@ -2,6 +2,7 @@ package app.service.impl;
 
 import app.info.FieldInfo;
 import app.info.ReviewInfo;
+import app.model.FieldType;
 import app.model.Review;
 import app.model.User;
 import app.service.ReviewService;
@@ -144,5 +145,18 @@ public class ReviewServiceImpl extends BaseServiceImpl implements ReviewService 
         }
         result.replaceAll((k, v) -> (Long)(v*100/ finalSum));
         return result;
+    }
+
+    @Override
+    public boolean deleteFieldType(int id) {
+        try {
+            Review review = getReviewDAO().findById(id, true);
+            getReviewDAO().delete(review);
+            logger.info(String.format("Delete Review having id: %d", id));
+            return true;
+        } catch (Exception e) {
+            logger.error(e);
+            throw e;
+        }
     }
 }

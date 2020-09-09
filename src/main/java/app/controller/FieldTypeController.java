@@ -109,4 +109,5 @@ public class FieldTypeController extends BaseController {
 
         return handleRedirect(redirectAttributes, "error", "Error updating field type details.", "/field-types/" + id);
     }
+
 }

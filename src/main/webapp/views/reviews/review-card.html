@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
 </head>
 
-<div th:fragment="review-card(review)">
+<div th:fragment="review-card(review, myReview)">
     <div class="card" th:object="${review}">
         <div class="card-body">
             <div class="post">
@@ -30,6 +30,13 @@
                 <div>
                     <a class="link-black text-sm" href="#"><i class="far fa-thumbs-up mr-1"></i>Like</a>
                     <a class="link-black text-sm" href="#"><i class="far fa-comments mr-1"></i>Comment(5)</a>
+                    <th:block th:if="${myReview}">
+                    <span class="float-right">
+                          <a href="#" th:href="@{/reviews/{id}/delete(id=${review.id})}" class="link-black text-sm">
+                            <i class="far fa-trash-alt" style="color: red"></i> Delete
+                          </a>
+                    </span></th:block>
+
                 </div>
             </div>
         </div>

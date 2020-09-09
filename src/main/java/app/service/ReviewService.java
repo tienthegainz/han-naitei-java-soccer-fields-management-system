@@ -27,4 +27,6 @@ public interface ReviewService {
     List<ReviewInfo> loadOtherUsersReviews(FieldInfo fieldInfo);
 
     HashMap<Integer, Long> countReviewGroupByRating(int id);
+
+    boolean deleteFieldType(int id);
 }

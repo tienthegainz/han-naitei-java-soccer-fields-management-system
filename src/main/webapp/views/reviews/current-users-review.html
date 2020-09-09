@@ -5,6 +5,6 @@
 </head>
 
 <div th:fragment="current-users-review">
-    <div th:include="~{views/reviews/review-card :: review-card(${currentUsersReview})}"></div>
+    <div th:include="~{views/reviews/review-card :: review-card(${currentUsersReview}, true)}"></div>
 </div>
 </html>
