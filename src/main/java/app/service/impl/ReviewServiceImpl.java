@@ -29,6 +29,7 @@ public class ReviewServiceImpl extends BaseServiceImpl implements ReviewService 
     @Override
     public String averageRatingByFieldId(int id) {
         Double avgRating = getReviewDAO().averageRatingByFieldId(id);
+        if (avgRating == null || avgRating == 0) return "0";
         return String.format("%.1f", avgRating);
     }
 
@@ -137,6 +138,10 @@ public class ReviewServiceImpl extends BaseServiceImpl implements ReviewService 
             sum += count;
         }
         long finalSum = sum;
+        if (sum == 0){
+//            Prevent divide by 0
+            return result;
+        }
         result.replaceAll((k, v) -> (Long)(v*100/ finalSum));
         return result;
     }
