@@ -1,28 +1,29 @@
 package app.info;
 
 import app.model.User;
+import app.validator.FieldMatch;
+import app.validator.UniqueEmail;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Date;
 
+@FieldMatch(message = "Password not matching", first = "password", second = "confirmPassword")
 public class UserInfo extends BaseInfo{
 
     private Integer id;
 
     private String username;
 
-    @NotBlank
+    @NotBlank(message = "Password must not blank")
     @Size(min = 5, max = 20, message = "Password length must be between 5 and 20")
     private String password;
 
     private String confirmPassword;
 
+    @UniqueEmail()
     private String email;
 
     private String phone;
