@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 @Controller
@@ -76,12 +77,19 @@ public class FieldController extends BaseController {
         ReviewInfo reviewInfo = new ReviewInfo();
         reviewInfo.setField(fieldInfo.toField());
 
+        String avgRating = reviewService.averageRatingByFieldId(id);
+        Long totalReview = reviewService.sumReviewByFieldId(id);
+        HashMap<Integer, Long> countRating = reviewService.countReviewGroupByRating(id);
+
         model.addAttribute("title", title);
         model.addAttribute("data", fieldInfo);
         model.addAttribute("currentUser", userService.getCurrentUser());
         model.addAttribute("currentUsersReview", reviewService.loadCurrentUsersReview(fieldInfo));
         model.addAttribute("otherUsersReviews", reviewService.loadOtherUsersReviews(fieldInfo));
+        model.addAttribute("avgRating", avgRating);
+        model.addAttribute("totalReview", totalReview);
         model.addAttribute("reviewForm", reviewInfo);
+        model.addAttribute("countRating", countRating);
 
         return "views/fields/show";
     }
