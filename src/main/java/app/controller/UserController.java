@@ -3,6 +3,7 @@ package app.controller;
 import app.info.FieldInfo;
 import app.info.FieldTypeInfo;
 import app.info.UserInfo;
+import app.model.User;
 import app.service.FieldService;
 import app.service.FieldTypeService;
 import app.service.UserService;
@@ -25,8 +26,6 @@ import java.util.Optional;
 
 @Controller
 public class UserController extends BaseController {
-
-    private static final Logger logger = Logger.getLogger(UserController.class);
 
     private final UserService userService;
 
@@ -53,11 +52,19 @@ public class UserController extends BaseController {
 
     @GetMapping(path = {"/login", "users/login"})
     public String login(){
+        User currentUser = userService.getCurrentUser();
+        if (currentUser != null) {
+            return "redirect:/";
+        }
         return "views/auth/login";
     }
 
     @GetMapping(path = {"/register", "users/register"})
     public String register(Model model){
+        User currentUser = userService.getCurrentUser();
+        if (currentUser != null) {
+            return "redirect:/";
+        }
 
         UserInfo userInfo = new UserInfo();
 
@@ -72,7 +79,6 @@ public class UserController extends BaseController {
         userInfo.setId(null);
 
         if (bindingResult.hasErrors()){
-            logger.warn("Validation got errors");
             return "views/auth/register";
         }
         else if (userService.create(userInfo))

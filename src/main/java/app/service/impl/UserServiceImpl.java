@@ -19,6 +19,11 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
     BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
+    public boolean checkNewEmail(String email) {
+        return getUserDAO().checkNewEmail(email);
+    }
+
+    @Override
     public User getCurrentUser() {
         try {
             Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -43,22 +48,13 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
     @Override
     public boolean create(UserInfo userInfo) {
         try {
-            if (userInfo.validatePassword()){
-                if (getUserDAO().checkNewEmail(userInfo.getEmail())) {
-                    userInfo.setPassword(bCryptPasswordEncoder.encode(userInfo.getPassword()));
-                    userInfo.setAvatar("https://i4.sndcdn.com/avatars-Pjqz7m3i6m0ey3dt-C1i2vg-t200x200.jpg");
-                    User user = userInfo.toUser();
-                    user.setRole(User.Role.USER);
-                    getUserDAO().saveOrUpdate(user);
-                    logger.info("Created new User");
-                    return true;
-                }
-                else logger.warn(String.format("Email existed: %s", userInfo.getEmail()));
-            }
-            else logger.warn(String.format("Password not correct %s -- %s",
-                    userInfo.getPassword(), userInfo.getConfirmPassword()));
-
-            return false;
+                userInfo.setPassword(bCryptPasswordEncoder.encode(userInfo.getPassword()));
+                userInfo.setAvatar("https://i4.sndcdn.com/avatars-Pjqz7m3i6m0ey3dt-C1i2vg-t200x200.jpg");
+                User user = userInfo.toUser();
+                user.setRole(User.Role.USER);
+                getUserDAO().saveOrUpdate(user);
+                logger.info("Created new User");
+                return true;
         } catch (Exception e) {
             e.printStackTrace();
             logger.error(e);

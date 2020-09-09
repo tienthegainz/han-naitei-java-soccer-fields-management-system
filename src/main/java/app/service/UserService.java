@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 
 public interface UserService {
 
+    boolean checkNewEmail(String email);
+
     User getCurrentUser();
 
     boolean create(UserInfo userInfo);
